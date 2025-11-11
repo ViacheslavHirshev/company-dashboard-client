@@ -11,13 +11,7 @@ export type TSignUpFormInput = {
 };
 
 export type TSignInResponse = {
-  userData: {
-    id: number;
-    firstName: string;
-    lastName: string;
-    avatar: string;
-    role: string;
-  };
+  userRole: string;
   tokens: {
     accessToken: string;
     refreshToken: string;
@@ -27,4 +21,14 @@ export type TSignInResponse = {
 
 export type TSignUpResponse = {
   message: string;
+};
+
+export type TGetUserDataResponse = {
+  user: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    avatar: string;
+    role: string;
+  };
 };
