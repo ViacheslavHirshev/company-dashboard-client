@@ -6,7 +6,7 @@ type TProtectedRouteProps = {
 
 function ProtectedRoute({ allowedRoles }: TProtectedRouteProps) {
   const role = localStorage.getItem("userRole");
-  const authToken = localStorage.getItem("authToken");
+  const authToken = localStorage.getItem("accessToken");
 
   if (!role || !allowedRoles.includes(role)) {
     return <Navigate to="/forbidden" replace />;
