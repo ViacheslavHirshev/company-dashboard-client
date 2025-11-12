@@ -1,4 +1,5 @@
 import {
+  TRefreshAccessTokenResponse,
   TSignInFormInput,
   TSignInResponse,
   TSignUpFormInput,
@@ -31,6 +32,22 @@ export async function signUp(
   } catch (error) {
     if (error instanceof AxiosError) {
       throw new Error(error.response?.data.message);
+    } else {
+      throw new Error("Unknown error");
+    }
+  }
+}
+
+export async function refreshAccessToken(): Promise<TRefreshAccessTokenResponse> {
+  try {
+    const refreshToken = localStorage.getItem("refreshToken");
+    const response = await authApi.get("/refresh", {
+      headers: { Authorization: `Bearer ${refreshToken}` },
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.message);
     } else {
       throw new Error("Unknown error");
     }

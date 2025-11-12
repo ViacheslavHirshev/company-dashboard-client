@@ -32,3 +32,8 @@ export type TGetUserDataResponse = {
     role: string;
   };
 };
+
+export type TRefreshAccessTokenResponse = {
+  message: string;
+  accessToken: string;
+};
