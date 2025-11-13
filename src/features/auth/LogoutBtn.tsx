@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 import { useRoleContext } from "../../context/RoleProvider";
 import { useLocalStorage } from "../../hooks/localStorage";
-import Button from "../../ui/Button";
+import Button from "../../ui/buttons/Button";
 
 export default function LogoutBtn() {
   const { clearLocal } = useLocalStorage();
@@ -13,5 +13,5 @@ export default function LogoutBtn() {
     navigate("/");
     setTimeout(() => setRole(null), 1);
   }
-  return <Button onClickHandler={logout} text="Logout" />;
+  return <Button onClickHandler={logout}>Logout</Button>;
 }

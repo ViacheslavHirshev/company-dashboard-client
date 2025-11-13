@@ -1,4 +1,4 @@
-function PageNotFound() {
+function NotFoundPage() {
   return (
     <div>
       <h1>Something went wrong 😢</h1>
@@ -6,4 +6,4 @@ function PageNotFound() {
   );
 }
 
-export default PageNotFound;
+export default NotFoundPage;

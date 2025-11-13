@@ -1,7 +1,8 @@
 import { Outlet } from "react-router";
-import Header from "./Header";
-import Sidebar from "./Sidebar";
-import styles from "./uiStyles/AppLayout.module.css";
+
+import styles from "./AppLayout.module.css";
+import Header from "../header/Header";
+import Sidebar from "../Sidebar";
 
 function AppLayout() {
   return (

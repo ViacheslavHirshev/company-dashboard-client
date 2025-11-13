@@ -37,3 +37,69 @@ export type TRefreshAccessTokenResponse = {
   message: string;
   accessToken: string;
 };
+
+export type TGetUserDashboardResponse = {
+  companiesNumber: number;
+  totalCapital: number;
+  companies: [
+    {
+      id: number;
+      name: string;
+      service: string;
+      capital: number;
+    }
+  ];
+};
+
+export type TCompany = {
+  id: number;
+  name: string;
+  createdAt: string;
+  capital: number;
+  address: string;
+  service: string;
+  logoPath: string;
+};
+
+export type TGetCompanyResponse = {
+  company: {
+    id: number;
+    name: string;
+    createdAt: string;
+    capital: number;
+    address: string;
+    service: string;
+    logoPath: string;
+  };
+};
+
+export type TUpdateCompanyData = {
+  companyName: string;
+  createdAt: string;
+  capital: number;
+  service: string;
+  country: string;
+  city: string;
+  street: string;
+  streetNumber: string;
+};
+
+export type TUpdateCompanyResponse = {
+  company: {
+    id: number;
+    name: string;
+    createdAt: string;
+    capital: number;
+    address: string;
+    service: string;
+  };
+};
+
+export type TUpdateLogoResponse = {
+  message: string;
+  logoPath: string;
+};
+
+export type TGetUserCompaniesResponse = {
+  companies: Partial<TCompany>[];
+};

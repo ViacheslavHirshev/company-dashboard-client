@@ -1,6 +1,5 @@
-import LogoutBtn from "../features/auth/LogoutBtn";
-import styles from "./uiStyles/Header.module.css";
-
+import LogoutBtn from "../../features/auth/LogoutBtn";
+import styles from "./Header.module.css";
 type THeaderProps = {
   className: string;
 };

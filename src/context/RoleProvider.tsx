@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { getUserData } from "../api/services/userService";
-import Loader from "../ui/Loader";
+import Loader from "../ui/loader/Loader";
 import { createContext, Dispatch, SetStateAction } from "react";
 
 type TRoleContext = {
@@ -30,7 +30,7 @@ function RoleProvider({ children }: { children: React.ReactNode }) {
     setUserRole();
   }, []);
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <Loader size="full" />;
 
   return (
     <RoleContext.Provider value={{ role, setRole }}>

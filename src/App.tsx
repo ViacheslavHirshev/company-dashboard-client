@@ -1,17 +1,17 @@
 import { BrowserRouter, Route, Routes } from "react-router";
-import PageNotFound from "./ui/Error";
-import AppLayout from "./ui/AppLayout";
+import NotFoundPage from "./ui/NotFoundPage";
 import ProtectedRoute from "./ui/ProtectedRoute";
-import Dashboard from "./features/dashboard/Dashboard";
-import Companies from "./features/companies/Companies";
-import Company from "./features/companies/Company";
+import DashboardPage from "./features/dashboard/DashboardPage";
+import { CompaniesPage } from "./features/companies/CompaniesPage";
+import CompanyInfo from "./features/companies/companyInfo/CompanyInfo";
 import ProfilePage from "./features/profile/ProfilePage";
-import Forbidden from "./ui/Forbidden";
 import Homepage from "./ui/Homepage";
 import SignInForm from "./features/auth/SignInForm";
 import SignUpForm from "./features/auth/SignUpForm";
 import RoleProvider from "./context/RoleProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import AppLayout from "./ui/layout/AppLayout";
 
 const queryClient = new QueryClient();
 
@@ -33,18 +33,18 @@ function App() {
               }
             >
               <Route element={<AppLayout />}>
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/companies" element={<Companies />} />
-                <Route path="/companies/:id" element={<Company />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/companies" element={<CompaniesPage />} />
+                <Route path="/companies/:id" element={<CompanyInfo />} />
                 <Route path="/profile" element={<ProfilePage />} />
               </Route>
             </Route>
 
-            <Route path="/forbidden" element={<Forbidden />} />
-            <Route path="*" element={<PageNotFound />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>
       </RoleProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }

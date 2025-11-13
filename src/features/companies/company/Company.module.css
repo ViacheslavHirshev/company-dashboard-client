@@ -1,0 +1,10 @@
+.company {
+  background-color: aquamarine;
+  min-width: 200px;
+  max-width: 600px;
+  padding: 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
