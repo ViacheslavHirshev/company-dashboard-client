@@ -1,8 +1,9 @@
 import { AxiosError } from "axios";
 import userApi from "../userApi";
 import {
+  TGetCompaniesQueryArgs,
+  TGetCompaniesResponse,
   TGetCompanyResponse,
-  TGetUserCompaniesResponse,
   TGetUserDashboardResponse,
   TGetUserDataResponse,
   TUpdateCompanyData,
@@ -23,9 +24,19 @@ export async function getUserData(): Promise<TGetUserDataResponse> {
   }
 }
 
-export async function getDashboardUser(): Promise<TGetUserDashboardResponse> {
+export async function getDashboardUser(
+  args: TGetCompaniesQueryArgs = {}
+): Promise<TGetUserDashboardResponse> {
   try {
-    const response = await userApi.get("/dashboard");
+    const params = new URLSearchParams();
+
+    for (const [key, value] of Object.entries(args)) {
+      if (value || value === 0) {
+        params.append(key, String(value));
+      }
+    }
+
+    const response = await userApi.get("/dashboard", { params });
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -36,9 +47,19 @@ export async function getDashboardUser(): Promise<TGetUserDashboardResponse> {
   }
 }
 
-export async function getCompaniesUser(): Promise<TGetUserCompaniesResponse> {
+export async function getCompaniesUser(
+  args: TGetCompaniesQueryArgs = {}
+): Promise<TGetCompaniesResponse> {
+  const params = new URLSearchParams();
+
+  for (const [key, value] of Object.entries(args)) {
+    if (value || value === 0) {
+      params.append(key, String(value));
+    }
+  }
+
   try {
-    const response = await userApi.get("/companies");
+    const response = await userApi.get("/companies", { params });
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {

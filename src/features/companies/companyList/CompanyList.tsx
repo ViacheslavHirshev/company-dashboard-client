@@ -8,8 +8,8 @@ type TCompaniesListProps = {
 function CompanyList({ companies }: TCompaniesListProps) {
   return (
     <ul>
-      {companies.map((company, index) => (
-        <Company key={company.id} company={company} orderIndex={index + 1} />
+      {companies.map((company) => (
+        <Company key={company.id} company={company} />
       ))}
     </ul>
   );

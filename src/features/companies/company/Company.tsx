@@ -5,14 +5,14 @@ import styles from "./Company.module.css";
 
 type TCompanyProps = {
   company: Partial<TCompany>;
-  orderIndex: number;
+  // orderIndex: number;
 };
 
-function Company({ company, orderIndex }: TCompanyProps) {
+function Company({ company }: TCompanyProps) {
   return (
     <Link to={`/companies/${company.id}`}>
       <li className={styles.company}>
-        <div>{orderIndex}.</div>
+        {/* <div>{orderIndex}.</div> */}
         <div>{company.name}</div>
         <div>{company.service}</div>
         <div>{company.capital}</div>

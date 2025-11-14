@@ -49,6 +49,8 @@ export type TGetUserDashboardResponse = {
       capital: number;
     }
   ];
+  totalPages: number;
+  currentPage: number;
 };
 
 export type TCompany = {
@@ -100,6 +102,20 @@ export type TUpdateLogoResponse = {
   logoPath: string;
 };
 
-export type TGetUserCompaniesResponse = {
+export type TGetCompaniesResponse = {
   companies: Partial<TCompany>[];
+  totalPages: number;
+  currentPage: number;
+  totalCount: number;
+};
+
+export type TGetCompaniesQueryArgs = {
+  page?: number;
+  limit?: number;
+  sortBy?: "company_name" | "service";
+  sortOrder?: "asc" | "desc";
+  minCapital?: number;
+  maxCapital?: number;
+  startDate?: string;
+  endDate?: string;
 };

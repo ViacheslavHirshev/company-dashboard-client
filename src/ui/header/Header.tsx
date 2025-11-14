@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import LogoutBtn from "../../features/auth/LogoutBtn";
 import styles from "./Header.module.css";
 type THeaderProps = {
@@ -5,9 +6,11 @@ type THeaderProps = {
 };
 
 function Header({ className }: THeaderProps) {
+  const navigate = useNavigate();
+
   return (
     <header className={`${className} ${styles.header}`}>
-      <div>App emblem(return on homepage)</div>
+      <div onClick={() => navigate("/")}>Company dashboard</div>
       <LogoutBtn />
     </header>
   );
