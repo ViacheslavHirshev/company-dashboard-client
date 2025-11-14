@@ -11,6 +11,7 @@ import Button from "../../../ui/buttons/Button";
 import { useRef, useState } from "react";
 import UpdateCompanyModal from "../updateCompanyModal/UpdateCompanyModal";
 import { TUpdateCompanyResponse } from "../../../types";
+import { normalizeData } from "../../../utils/normalizeData";
 
 function CompanyInfo() {
   const { id } = useParams();
@@ -51,7 +52,8 @@ function CompanyInfo() {
     onError: () => {},
   });
 
-  if (isPending) return <Loader size="small" />;
+  if (isPending || isCompanyDeleting || isLogoUpdating)
+    return <Loader size="small" />;
   if (isError) return <CustomError message={error.message} />;
 
   function handleUpdateData(updatedData: TUpdateCompanyResponse) {
@@ -118,7 +120,7 @@ function CompanyInfo() {
             <Button onClickHandler={handleDeleteLogo}>Delete logo</Button>
           </div>
           <p>{data.company.name}</p>
-          <p>Created: {data.company.createdAt.toString()}</p>
+          <p>Created: {normalizeData(data.company.createdAt)}</p>
           <p>Type of service: {data.company.service}</p>
           <p>Capital: {data.company.capital}</p>
           <p>Address: {data.company.address}</p>

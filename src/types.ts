@@ -40,7 +40,11 @@ export type TRefreshAccessTokenResponse = {
 
 export type TGetUserDashboardResponse = {
   companiesNumber: number;
-  totalCapital: number;
+  totalCapital: {
+    _sum: {
+      capital: string;
+    };
+  };
   companies: [
     {
       id: number;
@@ -118,4 +122,29 @@ export type TGetCompaniesQueryArgs = {
   maxCapital?: number;
   startDate?: string;
   endDate?: string;
+};
+
+export type TUpdateUserData = {
+  firstName: string;
+  lastName: string;
+};
+
+export type TUpdateUserResponse = {
+  message: string;
+  user: {
+    id: number;
+    firstName: string;
+    lastName: string;
+  };
+};
+
+export type TUser = {
+  id: number;
+  firstName: string;
+  lastName: string;
+};
+
+export type TUpdateAvatarResponse = {
+  message: string;
+  avatarPath: string;
 };

@@ -4,7 +4,6 @@ import ProtectedRoute from "./ui/ProtectedRoute";
 import DashboardPage from "./features/dashboard/DashboardPage";
 import { CompaniesPage } from "./features/companies/CompaniesPage";
 import CompanyInfo from "./features/companies/companyInfo/CompanyInfo";
-import ProfilePage from "./features/profile/ProfilePage";
 import Homepage from "./ui/Homepage";
 import SignInForm from "./features/auth/SignInForm";
 import SignUpForm from "./features/auth/SignUpForm";
@@ -12,6 +11,7 @@ import RoleProvider from "./context/RoleProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import AppLayout from "./ui/layout/AppLayout";
+import { ProfilePage } from "./features/profile/ProfilePage";
 
 const queryClient = new QueryClient();
 

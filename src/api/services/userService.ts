@@ -6,8 +6,10 @@ import {
   TGetCompanyResponse,
   TGetUserDashboardResponse,
   TGetUserDataResponse,
+  TUpdateAvatarResponse,
   TUpdateCompanyData,
   TUpdateLogoResponse,
+  TUpdateUserData,
 } from "../../types";
 
 export async function getUserData(): Promise<TGetUserDataResponse> {
@@ -128,6 +130,34 @@ export async function updateLogo(
 export async function deleteCompany(id: string) {
   try {
     const response = await userApi.delete(`/companies/${id}`);
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    } else {
+      throw new Error("Unknown error");
+    }
+  }
+}
+
+export async function updateUserData(data: TUpdateUserData) {
+  try {
+    const response = await userApi.put("/profile", data);
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data.message);
+    } else {
+      throw new Error("Unknown error");
+    }
+  }
+}
+
+export async function updateAvatar(
+  data: FormData
+): Promise<TUpdateAvatarResponse> {
+  try {
+    const response = await userApi.patch(`/profile`, data);
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {

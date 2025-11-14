@@ -53,6 +53,9 @@ export function UserPanel() {
 
   return (
     <div>
+      <div>Companies you have: {data.companiesNumber}</div>
+      <div>Your total capital: {data.totalCapital._sum.capital}</div>
+
       <div>
         <label>Limit:</label>
         <select value={queryState.limit} onChange={handleLimitChange}>
