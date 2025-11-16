@@ -1,9 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  TCompany,
-  TUserUpdateCompanyData,
-  TUserUpdateCompanyResponse,
-} from "../../../types";
+import { TCompany, TUserUpdateCompanyData } from "../../../types";
 import Modal from "../../../ui/modal/Modal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { userUpdateCompany } from "../../../api/services/userService";

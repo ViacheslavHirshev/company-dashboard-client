@@ -3,7 +3,7 @@ import {
   adminGetCompanies,
   userGetCompanies,
 } from "../../api/services/userService";
-import CustomError from "../../ui/CustomError";
+import CustomError from "../../ui/errors/CustomError";
 import Loader from "../../ui/loader/Loader";
 import { useQuery } from "@tanstack/react-query";
 import Button from "../../ui/buttons/Button";
@@ -11,9 +11,9 @@ import CompanyList from "./companyList/CompanyList";
 import NewCompany from "./newCompany/NewCompany";
 import { TGetCompaniesArgs } from "../../types";
 import { useRoleContext } from "../../context/RoleProvider";
-import { SortOptions } from "../../ui/SortOptions";
-import { Filters } from "../../ui/Filters";
-import { NoData } from "../../ui/NoData";
+import { NoData } from "../../ui/errors/NoData";
+import { Filters } from "../../ui/filters/Filters";
+import { SortOptions } from "../../ui/sort/SortOptions";
 
 type QueryState = TGetCompaniesArgs;
 

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import LogoutBtn from "../../features/auth/LogoutBtn";
+import LogoutBtn from "../../features/auth/logout/LogoutBtn";
 import styles from "./Header.module.css";
 type THeaderProps = {
   className: string;
