@@ -4,6 +4,7 @@ import { signIn } from "../../api/services/authService";
 import { useNavigate } from "react-router";
 import { useLocalStorage } from "../../hooks/localStorage";
 import { useRoleContext } from "../../context/RoleProvider";
+import Button from "../../ui/buttons/Button";
 
 function SignInForm() {
   const {
@@ -57,7 +58,7 @@ function SignInForm() {
         />
       </div>
 
-      <button type="submit">Sign-in</button>
+      <Button type="submit">Sign-in</Button>
     </form>
   );
 }

@@ -1,20 +1,28 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  deleteCompany,
-  getCompany,
-  updateLogo,
+  adminGetCompany,
+  userDeleteCompany,
+  userGetCompany,
+  userUpdateCompanyLogo,
 } from "../../../api/services/userService";
 import { useNavigate, useParams } from "react-router";
 import Loader from "../../../ui/loader/Loader";
 import CustomError from "../../../ui/CustomError";
 import Button from "../../../ui/buttons/Button";
 import { useRef, useState } from "react";
-import UpdateCompanyModal from "../updateCompanyModal/UpdateCompanyModal";
-import { TUpdateCompanyResponse } from "../../../types";
+import ChangeCompany from "../changeCompany/ChangeCompany";
 import { normalizeData } from "../../../utils/normalizeData";
+import { useRoleContext } from "../../../context/RoleProvider";
 
-function CompanyInfo() {
+export function CompanyInfo() {
+  const { role } = useRoleContext();
+
+  return role === "user" ? <CompanyUser /> : <CompanyAdmin />;
+}
+
+function CompanyUser() {
   const { id } = useParams();
+
   const queryClient = useQueryClient();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,11 +31,11 @@ function CompanyInfo() {
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["company", id],
-    queryFn: () => getCompany(id!),
+    queryFn: () => userGetCompany(id!),
   });
 
   const { mutate: mutateLogo, isPending: isLogoUpdating } = useMutation({
-    mutationFn: (data: FormData) => updateLogo(id!, data),
+    mutationFn: (data: FormData) => userUpdateCompanyLogo(id!, data),
     onSuccess: (updatedData) => {
       queryClient.setQueryData(["company", id], (oldData: { company: any }) => {
         if (!oldData) return;
@@ -44,7 +52,7 @@ function CompanyInfo() {
   });
 
   const { mutate: removeCompany, isPending: isCompanyDeleting } = useMutation({
-    mutationFn: () => deleteCompany(id!),
+    mutationFn: () => userDeleteCompany(id!),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["companies"] });
       navigate("/companies");
@@ -55,19 +63,6 @@ function CompanyInfo() {
   if (isPending || isCompanyDeleting || isLogoUpdating)
     return <Loader size="small" />;
   if (isError) return <CustomError message={error.message} />;
-
-  function handleUpdateData(updatedData: TUpdateCompanyResponse) {
-    queryClient.setQueryData(["company", id], (oldData: { company: any }) => {
-      if (!oldData) return;
-
-      return {
-        ...oldData,
-        company: updatedData.company,
-      };
-    });
-    queryClient.invalidateQueries({ queryKey: ["companies"] });
-    setIsModalOpen(false);
-  }
 
   function handleUpdateLogo(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files && e.target.files[0]) {
@@ -133,14 +128,44 @@ function CompanyInfo() {
         </div>
       </div>
       {isModalOpen && (
-        <UpdateCompanyModal
+        <ChangeCompany
+          id={data.company.id}
           company={data.company}
           onClose={() => setIsModalOpen(false)}
-          onUpdated={handleUpdateData}
         />
       )}
     </>
   );
 }
 
-export default CompanyInfo;
+export function CompanyAdmin() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const { isPending, isError, data, error } = useQuery({
+    queryKey: ["companyAdmin", id],
+    queryFn: () => adminGetCompany(id!),
+  });
+
+  if (isPending) return <Loader size="small" />;
+  if (isError) return <CustomError message={error.message} />;
+
+  return (
+    <div>
+      <Button type="button" onClickHandler={() => navigate(-1)}>
+        &larr;
+      </Button>
+      <div>
+        <img src={data.company.logoPath} alt="Company logo img" />
+      </div>
+      <p>{data.company.name}</p>
+      <p>Created: {normalizeData(data.company.createdAt)}</p>
+      <p>Type of service: {data.company.service}</p>
+      <p>Capital: {data.company.capital}</p>
+      <p>Address: {data.company.address}</p>
+      <p>
+        Owner: {data.company.owner.firstName} {data.company.owner.lastName}
+      </p>
+    </div>
+  );
+}

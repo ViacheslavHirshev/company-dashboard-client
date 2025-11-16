@@ -1,14 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router";
-import { getDashboardUser } from "../../../api/services/userService";
-import Loader from "../../../ui/loader/Loader";
-import CustomError from "../../../ui/CustomError";
-import CompanyList from "../../companies/companyList/CompanyList";
-import Button from "../../../ui/buttons/Button";
-import { TGetCompaniesQueryArgs } from "../../../types";
+import { userGetDashboard } from "../../api/services/userService";
+import Loader from "../../ui/loader/Loader";
+import CustomError from "../../ui/CustomError";
+import CompanyList from "../companies/companyList/CompanyList";
+import Button from "../../ui/buttons/Button";
+import { TGetCompaniesArgs } from "../../types";
 import { useReducer } from "react";
+import { NoData } from "../../ui/NoData";
+import PageLimit from "../../ui/PageLimit";
+import { useNavigate } from "react-router";
 
-type QueryState = Partial<TGetCompaniesQueryArgs>;
+type QueryState = Partial<TGetCompaniesArgs>;
 
 type QueryAction =
   | { type: "set_page"; payload?: number }
@@ -31,12 +33,13 @@ function queryReducer(state: QueryState, action: QueryAction): QueryState {
   }
 }
 
-export function UserPanel() {
+export function UserDashboard() {
   const [queryState, dispatch] = useReducer(queryReducer, initialState);
+  const navigate = useNavigate();
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["userDashboard", queryState],
-    queryFn: () => getDashboardUser(queryState),
+    queryFn: () => userGetDashboard(queryState),
   });
 
   function handleLimitChange(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -49,21 +52,21 @@ export function UserPanel() {
   if (isPending) return <Loader size="small" />;
   if (isError) return <CustomError message={error.message} />;
 
-  if (!data.companies.length) return <NoData />;
+  if (!data.companies.length)
+    return (
+      <NoData
+        message="Looks like you don't have any companies yet"
+        btnText="Add your first"
+        clickHandler={() => navigate("/companies")}
+      />
+    );
 
   return (
     <div>
       <div>Companies you have: {data.companiesNumber}</div>
-      <div>Your total capital: {data.totalCapital._sum.capital}</div>
+      <div>Total capital: {data.totalCapital._sum.capital}</div>
 
-      <div>
-        <label>Limit:</label>
-        <select value={queryState.limit} onChange={handleLimitChange}>
-          <option value={5}>5</option>
-          <option value={10}>10</option>
-          <option value={15}>15</option>
-        </select>
-      </div>
+      <PageLimit limit={queryState.limit || 5} setLimit={handleLimitChange} />
 
       <CompanyList companies={data.companies} />
       <div>
@@ -87,21 +90,6 @@ export function UserPanel() {
           </Button>
         )}
       </div>
-    </div>
-  );
-}
-
-function NoData() {
-  const navigate = useNavigate();
-
-  function clickHandler() {
-    navigate("/companies");
-  }
-
-  return (
-    <div>
-      <p>Looks like you don't have any companies yet 😥</p>
-      <Button onClickHandler={clickHandler}>Add your first</Button>
     </div>
   );
 }

@@ -1,36 +1,28 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  getUserData,
-  updateAvatar,
-  updateUserData,
-} from "../../api/services/userService";
+import { getProfile, updateAvatar } from "../../api/services/userService";
 import Loader from "../../ui/loader/Loader";
 import CustomError from "../../ui/CustomError";
 import Button from "../../ui/buttons/Button";
 import { ChangeEvent, useRef, useState } from "react";
-import {
-  TGetUserDataResponse,
-  TUpdateUserData,
-  TUpdateUserResponse,
-  TUser,
-} from "../../types";
-import { SubmitHandler, useForm } from "react-hook-form";
-import Modal from "../../ui/modal/Modal";
+import { TGetProfileResponse } from "../../types";
+import { ChangeInfo } from "./ChangeInfo";
+import { useNavigate } from "react-router";
 
 export function ProfilePage() {
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["profile"],
-    queryFn: getUserData,
+    queryFn: getProfile,
   });
-  const queryClient = useQueryClient();
 
-  const [isModal, setIsModal] = useState(false);
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const [isChangeInfo, setIsChangeInfo] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { mutate, isPending: isUpdatingAvatar } = useMutation({
     mutationFn: updateAvatar,
     onSuccess: (updatedData) => {
-      queryClient.setQueryData(["profile"], (oldData: TGetUserDataResponse) => {
+      queryClient.setQueryData(["profile"], (oldData: TGetProfileResponse) => {
         if (!oldData) return;
 
         return {
@@ -44,20 +36,6 @@ export function ProfilePage() {
     },
     onError: () => {},
   });
-
-  function handleUpdateUserData(updatedData: TUpdateUserResponse) {
-    queryClient.setQueryData(["profile"], (oldData: { user: any }) => {
-      if (!oldData) return;
-
-      return {
-        user: {
-          ...oldData.user,
-          ...updatedData.user,
-        },
-      };
-    });
-    setIsModal(false);
-  }
 
   function handleChangeAvatar() {
     inputRef.current?.click();
@@ -93,75 +71,24 @@ export function ProfilePage() {
         accept="image/*"
       />
 
-      <img src={data.user.avatar} />
+      <img src={data.user.avatar} alt="user avatar" />
       <div>
         <Button onClickHandler={handleChangeAvatar}>Change avatar</Button>
         <Button onClickHandler={handleDeleteAvatar}>Delete avatar</Button>
       </div>
-      <div>
-        <span>{data.user.firstName}</span>
-        <span>{data.user.lastName}</span>
-      </div>
+      <div>{`${data.user.firstName} ${data.user.lastName}`}</div>
       <div>{data.user.role}</div>
-      <Button onClickHandler={() => setIsModal(true)}>Change info</Button>
-      {isModal && (
-        <UpdateProfileModal
-          onClose={() => setIsModal(false)}
-          onUpdated={handleUpdateUserData}
-          user={data.user}
-        />
+      <div>
+        <Button onClickHandler={() => setIsChangeInfo(true)}>
+          Change info
+        </Button>
+        <Button onClickHandler={() => navigate("/profile/password-change")}>
+          Change password
+        </Button>
+      </div>
+      {isChangeInfo && (
+        <ChangeInfo onClose={() => setIsChangeInfo(false)} user={data.user} />
       )}
     </div>
-  );
-}
-
-type TUpdateProfileProps = {
-  onClose: () => void;
-  onUpdated: (updateData: TUpdateUserResponse) => void;
-  user: Partial<TUser>;
-};
-function UpdateProfileModal({ onClose, onUpdated, user }: TUpdateProfileProps) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<TUpdateUserData>({
-    defaultValues: {
-      firstName: user.firstName,
-      lastName: user.lastName,
-    },
-  });
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: updateUserData,
-    onSuccess: (updatedData) => {
-      reset();
-      onUpdated(updatedData);
-    },
-    onError: () => {},
-  });
-
-  const onSubmit: SubmitHandler<TUpdateUserData> = (data) => {
-    mutate(data);
-  };
-
-  return (
-    <Modal onClose={onClose}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label htmlFor="firstName">First name</label>
-          <input type="text" id="firstName" {...register("firstName")} />
-        </div>
-
-        <div>
-          <label htmlFor="lastName">Last name</label>
-          <input type="text" id="lastName" {...register("lastName")} />
-        </div>
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "Submiting..." : "Submit"}
-        </Button>
-      </form>
-    </Modal>
   );
 }

@@ -53,3 +53,19 @@ export async function refreshAccessToken(): Promise<TRefreshAccessTokenResponse>
     }
   }
 }
+
+export async function resetPassword(data: {
+  email: string;
+  newPassword: string;
+}): Promise<{ message: string }> {
+  try {
+    const response = await authApi.put("/auth/reset-password", data);
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.message);
+    } else {
+      throw new Error("Unknown error");
+    }
+  }
+}

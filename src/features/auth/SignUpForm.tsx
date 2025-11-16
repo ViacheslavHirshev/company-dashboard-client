@@ -2,6 +2,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { TSignUpFormInput } from "../../types";
 import { signUp } from "../../api/services/authService";
 import { useNavigate } from "react-router";
+import Button from "../../ui/buttons/Button";
 
 function SignUpForm() {
   const {
@@ -13,7 +14,7 @@ function SignUpForm() {
 
   const onSubmit: SubmitHandler<TSignUpFormInput> = async (data) => {
     try {
-      const { message } = await signUp(data);
+      await signUp(data);
       navigate("/sign-in");
     } catch (error) {
       if (error instanceof Error) {
@@ -46,7 +47,7 @@ function SignUpForm() {
         <input id="password" {...register("password")} />
       </div>
 
-      <button type="submit">Sign up</button>
+      <Button type="submit">Sign up</Button>
     </form>
   );
 }

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { getUserData } from "../api/services/userService";
+import { getProfile } from "../api/services/userService";
 import Loader from "../ui/loader/Loader";
 import { createContext, Dispatch, SetStateAction } from "react";
 
@@ -18,7 +18,7 @@ function RoleProvider({ children }: { children: React.ReactNode }) {
     async function setUserRole() {
       try {
         setIsLoading(true);
-        const { user } = await getUserData();
+        const { user } = await getProfile();
         setRole(user.role);
       } catch (error) {
         setRole(null);

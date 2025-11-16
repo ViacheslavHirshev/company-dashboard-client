@@ -1,69 +1,87 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  TCompany,
-  TUpdateCompanyData,
-  TUpdateCompanyResponse,
-} from "../../../types";
 import Modal from "../../../ui/modal/Modal";
-import { useMutation } from "@tanstack/react-query";
-import { updateCompany } from "../../../api/services/userService";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { userCreateCompany } from "../../../api/services/userService";
 import Button from "../../../ui/buttons/Button";
-import { splitAddress } from "../../../utils/splitAddress";
 
-type TUpdateCompanyProps = {
+type NewCompanyProps = {
   onClose: () => void;
-  onUpdated: (updateData: TUpdateCompanyResponse) => void;
-  company: Partial<TCompany>;
 };
 
-function UpdateCompanyModal({
-  onClose,
-  onUpdated,
-  company,
-}: TUpdateCompanyProps) {
-  const { country, city, street, streetNumber } = splitAddress(
-    company.address!
-  );
+type NewCompanyForm = {
+  companyName: string;
+  createdAt: string;
+  capital: number;
+  service: string;
+  country: string;
+  city: string;
+  street: string;
+  streetNumber: string;
+  logo?: FileList;
+};
+
+function NewCompany({ onClose }: NewCompanyProps) {
+  const queryClient = useQueryClient();
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
     reset,
-  } = useForm<TUpdateCompanyData>({
+    formState: { errors },
+  } = useForm<NewCompanyForm>({
     defaultValues: {
-      companyName: company.name,
-      createdAt: company.createdAt,
-      capital: company.capital,
-      service: company.service,
-      country,
-      city,
-      street,
-      streetNumber,
+      companyName: "",
+      createdAt: "",
+      capital: 0,
+      service: "",
+      country: "",
+      city: "",
+      street: "",
+      streetNumber: "1",
+      logo: undefined,
     },
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: TUpdateCompanyData) =>
-      updateCompany(`${company.id}`, data),
-    onSuccess: (updatedData) => {
+    mutationFn: userCreateCompany,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["companies"] });
       reset();
-      onUpdated(updatedData);
+      onClose();
     },
     onError: (error) => {
       console.log(error);
     },
   });
 
-  const onSubmit: SubmitHandler<TUpdateCompanyData> = (data) => {
-    mutate(data);
+  const onSubmit: SubmitHandler<NewCompanyForm> = (data) => {
+    const formData = new FormData();
+
+    for (const [key, value] of Object.entries(data)) {
+      if (value || value === 0) {
+        if (key === "logo") {
+          const logo = data.logo?.[0];
+
+          if (logo) {
+            formData.append(key, logo);
+            continue;
+          } else {
+            continue;
+          }
+        }
+
+        formData.append(key, String(value));
+      }
+    }
+
+    mutate(formData);
   };
 
   return (
     <Modal onClose={onClose}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
         <div>
-          <h2>Update company</h2>
+          <h2>New company</h2>
           <div>
             <label htmlFor="companyName">Company name</label>
             <input type="text" id="companyName" {...register("companyName")} />
@@ -113,6 +131,11 @@ function UpdateCompanyModal({
             />
           </div>
 
+          <div>
+            <label htmlFor="logo">Company logo</label>
+            <input type="file" id="logo" {...register("logo")} />
+          </div>
+
           <Button type="submit" disabled={isPending}>
             {isPending ? "Submiting..." : "Submit"}
           </Button>
@@ -122,4 +145,4 @@ function UpdateCompanyModal({
   );
 }
 
-export default UpdateCompanyModal;
+export default NewCompany;
