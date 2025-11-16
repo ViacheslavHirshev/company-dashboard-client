@@ -1,0 +1,46 @@
+.signUpForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  width: 20%;
+  min-width: 200px;
+  max-width: 400px;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+}
+
+.inputField {
+  font-family: inherit;
+  font-weight: 400;
+  color: var(--color-grey-900);
+  width: 100%;
+
+  padding: 0.6rem 1rem;
+  background-color: var(--color-grey-0);
+  border: 1px solid var(--color-grey-200);
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+/* 
+.submitBtn {
+  align-self: center;
+
+  border: none;
+  border-radius: 1rem;
+  width: 70%;
+  min-width: 150px;
+  max-width: 250px;
+  padding: 5px;
+  background-color: var(--color-grey-300);
+}
+
+.submitBtn:hover {
+  background-color: var(--color-grey-400);
+  transition: background-color 0.5s;
+} */

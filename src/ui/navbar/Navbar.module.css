@@ -1,0 +1,10 @@
+.navbar {
+  display: flex;
+  gap: 2.4rem;
+  align-items: center;
+}
+
+.navbar li a:global(.active) {
+  color: var(--color-brand-600);
+  font-weight: 600;
+}

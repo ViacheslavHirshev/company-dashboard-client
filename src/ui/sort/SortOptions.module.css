@@ -1,0 +1,29 @@
+.sortContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2.4rem;
+}
+
+.sortGroup {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.sortGroup label {
+  font-weight: 500;
+  color: var(--color-grey-700);
+}
+
+.select {
+  font-family: inherit;
+  font-weight: 500;
+  color: var(--color-grey-900);
+
+  padding: 0.2rem 0.5rem;
+  background-color: var(--color-grey-0);
+  border: 1px solid var(--color-grey-200);
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-sm);
+}

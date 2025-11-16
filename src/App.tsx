@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import NotFound from "./ui/errors/NotFound";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import Dashboard from "./features/dashboard/Dashboard";
-import Homepage from "./ui/Homepage";
+import Homepage from "./ui/homepage/Homepage";
 import RoleProvider from "./context/RoleProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";

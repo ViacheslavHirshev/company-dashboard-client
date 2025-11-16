@@ -4,6 +4,8 @@ import { signUp } from "../../../api/services/authService";
 import { useNavigate } from "react-router";
 import Button from "../../../ui/buttons/Button";
 
+import styles from "./SignUpForm.module.css";
+
 function SignUpForm() {
   const {
     register,
@@ -15,7 +17,7 @@ function SignUpForm() {
   const onSubmit: SubmitHandler<TSignUpFormInput> = async (data) => {
     try {
       await signUp(data);
-      navigate("/sign-in");
+      navigate("/sign-in", { replace: true });
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
@@ -26,28 +28,48 @@ function SignUpForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
+    <form className={styles.signUpForm} onSubmit={handleSubmit(onSubmit)}>
+      <div className={styles.inputContainer}>
         <label htmlFor="firstName">First name</label>
-        <input id="firstName" {...register("firstName")} />
+        <input
+          className={styles.inputField}
+          id="firstName"
+          {...register("firstName")}
+        />
       </div>
 
-      <div>
+      <div className={styles.inputContainer}>
         <label htmlFor="lastName">Last name</label>
-        <input id="lastName" {...register("lastName")} />
+        <input
+          className={styles.inputField}
+          id="lastName"
+          {...register("lastName")}
+        />
       </div>
 
-      <div>
+      <div className={styles.inputContainer}>
         <label htmlFor="email">Email</label>
-        <input id="email" {...register("email")} />
+        <input
+          className={styles.inputField}
+          type="email"
+          id="email"
+          {...register("email")}
+        />
       </div>
 
-      <div>
+      <div className={styles.inputContainer}>
         <label htmlFor="password">Password</label>
-        <input id="password" {...register("password")} />
+        <input
+          className={styles.inputField}
+          type="password"
+          id="password"
+          {...register("password")}
+        />
       </div>
 
-      <Button type="submit">Sign up</Button>
+      <Button style="primary" type="submit">
+        Sign up
+      </Button>
     </form>
   );
 }

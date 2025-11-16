@@ -9,6 +9,8 @@ import PageLimit from "../../../ui/pageLimit/PageLimit";
 import { AddAdmin } from "../addAdmin/AddAdmin";
 import { User } from "../usersPanel/User";
 
+import styles from "./Admins.module.css";
+
 export function Admins() {
   const [args, setArgs] = useState({
     page: 1,
@@ -29,42 +31,59 @@ export function Admins() {
   if (isError) return <CustomError message={error.message} />;
 
   return (
-    <div>
-      <Button onClickHandler={() => setIsModal(true)}>Add admin</Button>
-      {!data.users.length ? (
-        <NoData message="No admins yet" />
-      ) : (
-        <div>
-          <div>Number of admins: {data.totalCount}</div>
+    <div className={styles.adminsContainer}>
+      <div className={styles.header}>
+        <h3 className={styles.title}>Admins ({data.totalCount || 0})</h3>
+        <div className={styles.headerControls}>
           <PageLimit limit={args.limit} setLimit={handleLimitChange} />
-          {data.users.map((user) => (
-            <User key={user.id} user={user} />
-          ))}
-          <div>
-            {args.page > 1 && (
-              <Button
-                onClickHandler={() =>
-                  setArgs((prev) => ({ ...prev, page: args.page - 1 }))
-                }
-              >
-                Prev
-              </Button>
-            )}
-            <span>
-              {data.currentPage} of {data.totalPages}
-            </span>
-            {args.page < data.totalPages && (
-              <Button
-                onClickHandler={() =>
-                  setArgs((prev) => ({ ...prev, page: args.page + 1 }))
-                }
-              >
-                Next
-              </Button>
-            )}
-          </div>
+          <Button style="primary" onClickHandler={() => setIsModal(true)}>
+            Add admin
+          </Button>
         </div>
-      )}
+      </div>
+
+      <div className={styles.content}>
+        {!data.users.length ? (
+          <NoData message="No admins yet" />
+        ) : (
+          <>
+            <ul className={styles.list}>
+              {data.users.map((user) => (
+                <User key={user.id} user={user} />
+              ))}
+            </ul>
+
+            <div className={styles.pagination}>
+              <span className={styles.paginationText}>
+                {data.currentPage} of {data.totalPages}
+              </span>
+
+              {args.page > 1 && (
+                <Button
+                  style="secondary"
+                  onClickHandler={() =>
+                    setArgs((prev) => ({ ...prev, page: args.page - 1 }))
+                  }
+                >
+                  Prev
+                </Button>
+              )}
+
+              {args.page < data.totalPages && (
+                <Button
+                  style="secondary"
+                  onClickHandler={() =>
+                    setArgs((prev) => ({ ...prev, page: args.page + 1 }))
+                  }
+                >
+                  Next
+                </Button>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+
       {isModal && <AddAdmin onClose={() => setIsModal(false)} />}
     </div>
   );

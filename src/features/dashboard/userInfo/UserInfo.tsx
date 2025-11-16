@@ -8,6 +8,8 @@ import { useRoleContext } from "../../../context/RoleProvider";
 import { useState } from "react";
 import ChangeUser from "../changeUser/ChangeUser";
 
+import styles from "./UserInfo.module.css";
+
 export function UserInfo() {
   const { role } = useRoleContext();
 
@@ -44,15 +46,39 @@ export function UserInfo() {
   if (isError) return <CustomError message={error.message} />;
 
   return (
-    <div>
-      <Button onClickHandler={() => navigate(-1)}>&larr;</Button>
-      <img src={data.user.avatar} alt="user avatar" />
-      <p>{`${data.user.firstName} ${data.user.lastName}`}</p>
-      <p>{data.user.email}</p>
-      <div>
-        <Button onClickHandler={() => setIsModal(true)}>Change info</Button>
-        <Button onClickHandler={() => mutate()}>Delete user</Button>
+    <div className={styles.pageContainer}>
+      <Button
+        className={styles.backButton}
+        style="secondary"
+        onClickHandler={() => navigate(-1)}
+      >
+        &larr;
+      </Button>
+
+      <div className={styles.userCard}>
+        <div className={styles.avatarContainer}>
+          <img
+            className={styles.avatarImage}
+            src={data.user.avatar}
+            alt="user avatar"
+          />
+        </div>
+
+        <p className={styles.userName}>
+          {`${data.user.firstName} ${data.user.lastName}`}
+        </p>
+        <p className={styles.userEmail}>{data.user.email}</p>
+
+        <div className={styles.btnsContainer}>
+          <Button style="primary" onClickHandler={() => setIsModal(true)}>
+            Change info
+          </Button>
+          <Button style="danger" onClickHandler={() => mutate()}>
+            Delete user
+          </Button>
+        </div>
       </div>
+
       {isModal && <ChangeUser id={id!} onClose={() => setIsModal(false)} />}
     </div>
   );

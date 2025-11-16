@@ -3,6 +3,8 @@ import Button from "../../../ui/buttons/Button";
 import { resetPassword } from "../../../api/services/authService";
 import { useNavigate } from "react-router";
 
+import styles from "./Reset.module.css";
+
 type ResetForm = {
   email: string;
   newPassword: string;
@@ -16,36 +18,46 @@ function Reset() {
     try {
       const result = await resetPassword(data);
       console.log(result.message);
-      navigate("/sign-in");
+      navigate("/sign-in", { replace: true });
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
+    <div className={styles.resetContainer}>
+      <form className={styles.resetForm} onSubmit={handleSubmit(onSubmit)}>
+        <div className={styles.inputContainer}>
           <label htmlFor="email">Email</label>
           <input
+            className={styles.inputField}
             id="email"
-            type="text"
+            type="email"
             {...register("email", { required: true })}
           />
         </div>
 
-        <div>
+        <div className={styles.inputContainer}>
           <label htmlFor="password">New password</label>
           <input
+            className={styles.inputField}
             id="newPassword"
-            type="text"
+            type="password"
             {...register("newPassword", { required: true })}
           />
         </div>
 
-        <div>
-          <Button type="submit">Reset password</Button>
-          <Button onClickHandler={() => navigate("/sign-in")}>Cancel</Button>
+        <div className={styles.btnContainer}>
+          <Button style="primary" type="submit">
+            Reset
+          </Button>
+
+          <Button
+            style="danger"
+            onClickHandler={() => navigate("/sign-in", { replace: true })}
+          >
+            Cancel
+          </Button>
         </div>
       </form>
     </div>

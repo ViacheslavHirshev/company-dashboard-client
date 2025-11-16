@@ -4,6 +4,8 @@ import { Companies } from "./companiesPanel/Companies";
 import { UserDashboard } from "./userDashboard/UserDashboard";
 import { Users } from "./usersPanel/Users";
 
+import styles from "./Dashboard.module.css"
+
 function Dashboard() {
   const { role } = useRoleContext();
 
@@ -12,11 +14,11 @@ function Dashboard() {
   }
 
   return (
-    <>
+    <div className={styles.dashboardLayout}>
       <Users />
       <Companies />
       {role === "superadmin" && <Admins />}
-    </>
+    </div>
   );
 }
 

@@ -1,0 +1,34 @@
+.userRow {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
+  gap: 1.6rem;
+
+  padding: 1.2rem 1.6rem;
+  background-color: var(--color-grey-0);
+  border: 1px solid var(--color-grey-100);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.userRow:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.userRow:focus {
+  outline: 2px solid var(--color-brand-600);
+  outline-offset: 2px;
+}
+
+.name {
+  font-weight: 600;
+  color: var(--color-brand-600);
+}
+
+.email {
+  color: var(--color-grey-600);
+}

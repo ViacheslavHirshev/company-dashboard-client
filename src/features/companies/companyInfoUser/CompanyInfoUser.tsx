@@ -12,6 +12,8 @@ import Button from "../../../ui/buttons/Button";
 import { normalizeDate } from "../../../utils/normalizeDate";
 import ChangeCompany from "../changeCompany/ChangeCompany";
 
+import styles from "./CompanyInfoUser.module.css";
+
 export function CompanyInfoUser() {
   const { id } = useParams();
 
@@ -86,15 +88,26 @@ export function CompanyInfoUser() {
 
   return (
     <>
-      <div>
-        <Button type="button" onClickHandler={() => navigate(-1)}>
+      <div className={styles.pageContainer}>
+        <Button
+          className={styles.backButton}
+          style="secondary"
+          type="button"
+          onClickHandler={() => navigate(-1)}
+        >
           &larr;
         </Button>
-        <div>
-          <div>
-            <img src={data.company.logoPath} alt="Company logo img" />
+
+        <div className={styles.companyCard}>
+          <div className={styles.logoContainer}>
+            <img
+              className={styles.logoImage}
+              src={data.company.logoPath}
+              alt="Company logo img"
+            />
           </div>
-          <div>
+
+          <div className={styles.logoBtns}>
             <input
               type="file"
               style={{ display: "none" }}
@@ -102,22 +115,46 @@ export function CompanyInfoUser() {
               accept="image/*"
               onChange={handleUpdateLogo}
             />
-            <Button onClickHandler={handleFileSelect}>Update logo</Button>
-            <Button onClickHandler={handleDeleteLogo}>Delete logo</Button>
+
+            <Button style="primary" onClickHandler={handleFileSelect}>
+              Update logo
+            </Button>
+            <Button style="secondary" onClickHandler={handleDeleteLogo}>
+              Delete logo
+            </Button>
           </div>
-          <p>{data.company.name}</p>
-          <p>Created: {normalizeDate(data.company.createdAt)}</p>
-          <p>Type of service: {data.company.service}</p>
-          <p>Capital: {data.company.capital}</p>
-          <p>Address: {data.company.address}</p>
+
+          <div className={styles.infoBlock}>
+            <p className={styles.companyName}>{data.company.name}</p>
+            <p className={styles.infoItem}>
+              <span>Created:</span>
+              <span>{normalizeDate(data.company.createdAt)}</span>
+            </p>
+            <p className={styles.infoItem}>
+              <span>Type of service:</span>
+              <span>{data.company.service}</span>
+            </p>
+            <p className={styles.infoItem}>
+              <span>Capital:</span>
+              <span>{data.company.capital}</span>
+            </p>
+            <p className={styles.infoItem}>
+              <span>Address:</span>
+              <span>{data.company.address}</span>
+            </p>
+          </div>
         </div>
-        <div>
-          <Button onClickHandler={() => setIsModalOpen(true)}>
-            Update company
+
+        <div className={styles.changeBtns}>
+          <Button style="primary" onClickHandler={() => setIsModalOpen(true)}>
+            Change company
           </Button>
-          <Button onClickHandler={handleDeleteCompany}>Delete company</Button>
+          <Button style="danger" onClickHandler={handleDeleteCompany}>
+            Delete company
+          </Button>
         </div>
       </div>
+
       {isModalOpen && (
         <ChangeCompany
           id={data.company.id}

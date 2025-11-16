@@ -1,0 +1,44 @@
+.companiesContainer {
+  height: 100%;
+  padding: 1rem;
+
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  justify-items: center;
+}
+
+.newButton {
+  grid-row: 1 / 2;
+  justify-self: end;
+}
+
+.controls {
+  grid-row: 2 / 3;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 1.4rem;
+}
+
+.companyList {
+  padding-top: 2rem;
+  grid-row: 3 / 4;
+
+  width: 100%;
+  min-width: 400px;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.pagination {
+  grid-row: 4 / 5;
+  align-self: end;
+
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+}

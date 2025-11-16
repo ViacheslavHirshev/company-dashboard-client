@@ -1,0 +1,35 @@
+.filtersContainer {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.6rem;
+}
+
+.filtersContainer input {
+  font-family: inherit;
+  font-weight: 400;
+  color: var(--color-grey-900);
+
+  padding: 0.3rem 0.5rem;
+  background-color: var(--color-grey-0);
+  border: 1px solid var(--color-grey-200);
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-sm);
+
+  transition: all 0.3s;
+}
+
+input::placeholder {
+  color: var(--color-grey-400);
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.inputsContainer {
+  display: flex;
+  gap: 0.4rem;
+}

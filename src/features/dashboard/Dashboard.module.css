@@ -1,0 +1,10 @@
+.dashboardLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "users companies"
+    "admins admins";
+  gap: 2.4rem;
+
+  padding: 2rem;
+}

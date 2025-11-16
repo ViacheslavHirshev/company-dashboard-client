@@ -4,6 +4,8 @@ import { changeUser } from "../../../api/services/userService";
 import Modal from "../../../ui/modal/Modal";
 import Button from "../../../ui/buttons/Button";
 
+import styles from "./ChangeUser.module.css";
+
 type ChangeUserForm = {
   firstName: string;
   lastName: string;
@@ -50,18 +52,24 @@ function ChangeUser({ id, onClose }: ChangeUserProps) {
 
   return (
     <Modal onClose={onClose}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
+      <form className={styles.formContainer} onSubmit={handleSubmit(onSubmit)}>
+        <h2 className={styles.header}>Change User Info</h2>
+        <div className={styles.formGroup}>
           <label>First name</label>
           <input type="text" {...register("firstName")} />
         </div>
 
-        <div>
+        <div className={styles.formGroup}>
           <label>Last name</label>
           <input type="text" {...register("lastName")} />
         </div>
 
-        <Button type="submit" disabled={isPending}>
+        <Button
+          className={styles.submitButton}
+          style="primary"
+          type="submit"
+          disabled={isPending}
+        >
           {isPending ? "Changing..." : "Change"}
         </Button>
       </form>

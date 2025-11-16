@@ -8,6 +8,8 @@ import { TGetProfileResponse } from "../../types";
 import { ChangeInfo } from "./changeInfo/ChangeInfo";
 import { useNavigate } from "react-router";
 
+import styles from "./Profile.module.css";
+
 export function Profile() {
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["profile"],
@@ -62,7 +64,7 @@ export function Profile() {
   if (isError) return <CustomError message={error.message} />;
 
   return (
-    <div>
+    <div className={styles.profileContainer}>
       <input
         type="file"
         ref={inputRef}
@@ -71,21 +73,36 @@ export function Profile() {
         accept="image/*"
       />
 
-      <img src={data.user.avatar} alt="user avatar" />
-      <div>
-        <Button onClickHandler={handleChangeAvatar}>Change avatar</Button>
-        <Button onClickHandler={handleDeleteAvatar}>Delete avatar</Button>
+      <div className={styles.avatarContainer}>
+        <img src={data.user.avatar} alt="user avatar" />
       </div>
-      <div>{`${data.user.firstName} ${data.user.lastName}`}</div>
-      <div>{data.user.role}</div>
-      <div>
-        <Button onClickHandler={() => setIsChangeInfo(true)}>
+
+      <div className={styles.avatarBtns}>
+        <Button style="primary" onClickHandler={handleChangeAvatar}>
+          Change avatar
+        </Button>
+        <Button style="secondary" onClickHandler={handleDeleteAvatar}>
+          Delete avatar
+        </Button>
+      </div>
+
+      <div
+        className={styles.userName}
+      >{`${data.user.firstName} ${data.user.lastName}`}</div>
+      <div className={styles.userRole}>{data.user.role}</div>
+
+      <div className={styles.changeBtns}>
+        <Button style="primary" onClickHandler={() => setIsChangeInfo(true)}>
           Change info
         </Button>
-        <Button onClickHandler={() => navigate("/profile/password-change")}>
+        <Button
+          style="primary"
+          onClickHandler={() => navigate("/profile/password-change")}
+        >
           Change password
         </Button>
       </div>
+
       {isChangeInfo && (
         <ChangeInfo onClose={() => setIsChangeInfo(false)} user={data.user} />
       )}

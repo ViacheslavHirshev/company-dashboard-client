@@ -6,6 +6,8 @@ import { useLocalStorage } from "../../../hooks/localStorage";
 import { useRoleContext } from "../../../context/RoleProvider";
 import Button from "../../../ui/buttons/Button";
 
+import styles from "./SignInForm.module.css";
+
 function SignInForm() {
   const {
     register,
@@ -39,26 +41,28 @@ function SignInForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
+    <form className={styles.signInForm} onSubmit={handleSubmit(onSubmit)}>
+      <div className={styles.inputContainer}>
         <label htmlFor="email">Email</label>
         <input
           id="email"
-          type="text"
+          type="email"
           {...register("email", { required: true })}
         />
       </div>
 
-      <div>
+      <div className={styles.inputContainer}>
         <label htmlFor="password">Password</label>
         <input
           id="password"
-          type="text"
+          type="password"
           {...register("password", { required: true })}
         />
       </div>
 
-      <Button type="submit">Sign-in</Button>
+      <Button style="primary" type="submit">
+        Sign-in
+      </Button>
     </form>
   );
 }

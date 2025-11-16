@@ -3,11 +3,12 @@ import Company from "../company/Company";
 
 type TCompaniesListProps = {
   companies: Partial<TCompany>[];
+  className?: string;
 };
 
-function CompanyList({ companies }: TCompaniesListProps) {
+function CompanyList({ companies, className = "" }: TCompaniesListProps) {
   return (
-    <ul>
+    <ul className={className}>
       {companies.map((company) => (
         <Company key={company.id} company={company} />
       ))}

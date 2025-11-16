@@ -8,6 +8,8 @@ import Button from "../../../ui/buttons/Button";
 import { NoData } from "../../../ui/errors/NoData";
 import { User } from "./User";
 
+import styles from "./Users.module.css";
+
 export function Users() {
   const [args, setArgs] = useState({
     page: 1,
@@ -26,36 +28,50 @@ export function Users() {
   if (isPending) return <Loader size="small" />;
   if (isError) return <CustomError message={error.message} />;
 
-  return !data.users.length ? (
-    <NoData message="No users registered yet" />
-  ) : (
-    <div>
-      <div>Users registered: {data.totalCount}</div>
-      <PageLimit limit={args.limit} setLimit={handleLimitChange} />
-      {data.users.map((user) => (
-        <User key={user.id} user={user} />
-      ))}
-      <div>
-        {args.page > 1 && (
-          <Button
-            onClickHandler={() =>
-              setArgs((prev) => ({ ...prev, page: args.page - 1 }))
-            }
-          >
-            Prev
-          </Button>
-        )}
-        <span>
-          {data.currentPage} of {data.totalPages}
-        </span>
-        {args.page < data.totalPages && (
-          <Button
-            onClickHandler={() =>
-              setArgs((prev) => ({ ...prev, page: args.page + 1 }))
-            }
-          >
-            Next
-          </Button>
+  return (
+    <div className={styles.usersContainer}>
+      <div className={styles.header}>
+        <h3 className={styles.title}>Users ({data.totalCount || 0})</h3>
+        <PageLimit limit={args.limit} setLimit={handleLimitChange} />
+      </div>
+
+      <div className={styles.content}>
+        {!data.users.length ? (
+          <NoData message="No users registered yet" />
+        ) : (
+          <>
+            <ul className={styles.list}>
+              {data.users.map((user) => (
+                <User key={user.id} user={user} />
+              ))}
+            </ul>
+
+            <div className={styles.pagination}>
+              {args.page > 1 && (
+                <Button
+                  style="secondary"
+                  onClickHandler={() =>
+                    setArgs((prev) => ({ ...prev, page: args.page - 1 }))
+                  }
+                >
+                  Prev
+                </Button>
+              )}
+              <span className={styles.paginationText}>
+                {data.currentPage} of {data.totalPages}
+              </span>
+              {args.page < data.totalPages && (
+                <Button
+                  style="secondary"
+                  onClickHandler={() =>
+                    setArgs((prev) => ({ ...prev, page: args.page + 1 }))
+                  }
+                >
+                  Next
+                </Button>
+              )}
+            </div>
+          </>
         )}
       </div>
     </div>

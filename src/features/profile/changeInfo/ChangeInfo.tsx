@@ -5,6 +5,8 @@ import { updateProfile } from "../../../api/services/userService";
 import Modal from "../../../ui/modal/Modal";
 import Button from "../../../ui/buttons/Button";
 
+import styles from "./ChangeInfo.module.css";
+
 type ChangeInfoProps = {
   onClose: () => void;
   user: Partial<TUser>;
@@ -49,17 +51,25 @@ export function ChangeInfo({ onClose, user }: ChangeInfoProps) {
 
   return (
     <Modal onClose={onClose}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.formContainer}>
+        <h2 className={styles.header}>Change Info</h2>
+
+        <div className={styles.formGroup}>
           <label htmlFor="firstName">First name</label>
           <input type="text" id="firstName" {...register("firstName")} />
         </div>
 
-        <div>
+        <div className={styles.formGroup}>
           <label htmlFor="lastName">Last name</label>
           <input type="text" id="lastName" {...register("lastName")} />
         </div>
-        <Button type="submit" disabled={isPending}>
+
+        <Button
+          className={styles.submitButton}
+          style="primary"
+          type="submit"
+          disabled={isPending}
+        >
           {isPending ? "Submiting..." : "Submit"}
         </Button>
       </form>

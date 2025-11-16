@@ -10,6 +10,8 @@ import { NoData } from "../../../ui/errors/NoData";
 import PageLimit from "../../../ui/pageLimit/PageLimit";
 import { useNavigate } from "react-router";
 
+import styles from "./UserDashboard.module.css";
+
 type QueryState = Partial<TGetCompaniesArgs>;
 
 type QueryAction =
@@ -62,16 +64,32 @@ export function UserDashboard() {
     );
 
   return (
-    <div>
-      <div>Companies you have: {data.companiesNumber}</div>
-      <div>Total capital: {data.totalCapital._sum.capital}</div>
+    <div className={styles.dashboardContainer}>
+      <div className={styles.dashboardHeader}>
+        <div className={styles.statsContainer}>
+          <div className={styles.statBox}>
+            <span>Companies you have:</span>
+            <span>{data.companiesNumber || 0}</span>
+          </div>
 
-      <PageLimit limit={queryState.limit || 5} setLimit={handleLimitChange} />
+          <div className={styles.statBox}>
+            <span>Total capital:</span>
+            <span>{data.totalCapital._sum.capital || 0}</span>
+          </div>
+        </div>
 
-      <CompanyList companies={data.companies} />
-      <div>
+        <PageLimit limit={queryState.limit || 5} setLimit={handleLimitChange} />
+      </div>
+
+      <CompanyList className={styles.companyList} companies={data.companies} />
+
+      <div className={styles.paginationContainer}>
+        <span className={styles.paginationText}>
+          {`Page ${data.currentPage} from ${data.totalPages}`}
+        </span>
         {data.currentPage > 1 && (
           <Button
+            style="secondary"
             onClickHandler={() =>
               dispatch({ type: "set_page", payload: data.currentPage - 1 })
             }
@@ -79,9 +97,9 @@ export function UserDashboard() {
             Prev
           </Button>
         )}
-        <span>{`Page ${data.currentPage} from ${data.totalPages}`}</span>
         {data.currentPage < data.totalPages && (
           <Button
+            style="secondary"
             onClickHandler={() =>
               dispatch({ type: "set_page", payload: data.currentPage + 1 })
             }

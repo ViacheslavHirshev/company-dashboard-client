@@ -1,16 +1,18 @@
 import { useNavigate } from "react-router";
 import LogoutBtn from "../../features/auth/logout/LogoutBtn";
-import styles from "./Header.module.css";
-type THeaderProps = {
-  className: string;
-};
+import Navbar from "../navbar/Navbar";
 
-function Header({ className }: THeaderProps) {
+import styles from "./Header.module.css";
+
+function Header() {
   const navigate = useNavigate();
 
   return (
-    <header className={`${className} ${styles.header}`}>
-      <div onClick={() => navigate("/")}>Company dashboard</div>
+    <header className={`${styles.header}`}>
+      <h1 className={styles.logo} onClick={() => navigate("/")}>
+        Company dashboard
+      </h1>
+      <Navbar />
       <LogoutBtn />
     </header>
   );

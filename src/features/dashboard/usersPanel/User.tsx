@@ -1,18 +1,18 @@
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 import { TUser } from "../../../types";
 
+import styles from "./User.module.css";
+
 export function User({ user }: { user: TUser }) {
+  const navigate = useNavigate();
+
   return (
-    <Link to={`/users/${user.id}`}>
-      <div
-        style={{
-          backgroundColor: "white",
-          border: "1px solid black",
-          marginTop: "5px",
-        }}
-      >
-        <p>{`${user.firstName} ${user.lastName}`}</p>
-      </div>
-    </Link>
+    <li
+      className={styles.userRow}
+      onClick={() => navigate(`/users/${user.id}`)}
+    >
+      <p className={styles.name}>{`${user.firstName} ${user.lastName}`}</p>
+      <div className={styles.email}>{user.email}</div>
+    </li>
   );
 }

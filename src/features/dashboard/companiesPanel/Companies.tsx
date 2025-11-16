@@ -8,6 +8,8 @@ import { useState } from "react";
 import { getAllCompaniesDashboard } from "../../../api/services/userService";
 import { NoData } from "../../../ui/errors/NoData";
 
+import styles from "./Companies.module.css";
+
 export function Companies() {
   const [args, setArgs] = useState({
     page: 1,
@@ -26,34 +28,50 @@ export function Companies() {
   if (isPending) return <Loader size="small" />;
   if (isError) return <CustomError message={error.message} />;
 
-  return !data?.companies.length ? (
-    <NoData message="No companies were added yet" />
-  ) : (
-    <div>
-      <div>Registered companies: {data.totalCount}</div>
-      <PageLimit limit={args.limit} setLimit={handleLimitChange} />
-      <CompanyList companies={data.companies} />
-      <div>
-        {args.page > 1 && (
-          <Button
-            onClickHandler={() =>
-              setArgs((prev) => ({ ...prev, page: args.page - 1 }))
-            }
-          >
-            Prev
-          </Button>
-        )}
-        <span>
-          {data.currentPage} of {data.totalPages}
-        </span>
-        {args.page < data.totalPages && (
-          <Button
-            onClickHandler={() =>
-              setArgs((prev) => ({ ...prev, page: args.page + 1 }))
-            }
-          >
-            Next
-          </Button>
+  return (
+    <div className={styles.companiesContainer}>
+      <div className={styles.header}>
+        <h3 className={styles.title}>
+          Registered companies: {data?.totalCount || 0}
+        </h3>
+        <PageLimit limit={args.limit} setLimit={handleLimitChange} />
+      </div>
+
+      <div className={styles.content}>
+        {!data?.companies.length ? (
+          <NoData message="No companies were added yet" />
+        ) : (
+          <>
+            <CompanyList companies={data.companies} className={styles.list} />
+
+            <div className={styles.pagination}>
+              <span className={styles.paginationText}>
+                {data.currentPage} of {data.totalPages}
+              </span>
+
+              {args.page > 1 && (
+                <Button
+                  style="secondary"
+                  onClickHandler={() =>
+                    setArgs((prev) => ({ ...prev, page: args.page - 1 }))
+                  }
+                >
+                  Prev
+                </Button>
+              )}
+
+              {args.page < data.totalPages && (
+                <Button
+                  style="secondary"
+                  onClickHandler={() =>
+                    setArgs((prev) => ({ ...prev, page: args.page + 1 }))
+                  }
+                >
+                  Next
+                </Button>
+              )}
+            </div>
+          </>
         )}
       </div>
     </div>

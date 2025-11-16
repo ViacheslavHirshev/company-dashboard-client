@@ -1,5 +1,7 @@
 import PageLimit from "../pageLimit/PageLimit";
 
+import styles from "./SortOptions.module.css";
+
 type TSortOptionsProps = {
   sortByValue: string | undefined;
   sortOrderValue: string | undefined;
@@ -18,19 +20,27 @@ export function SortOptions({
   handleLimitChange,
 }: TSortOptionsProps) {
   return (
-    <div>
-      <div>
+    <div className={styles.sortContainer}>
+      <div className={styles.sortGroup}>
         <label>Sort by:</label>
-        <select value={sortByValue || ""} onChange={handleSortByChange}>
+        <select
+          className={styles.select}
+          value={sortByValue || ""}
+          onChange={handleSortByChange}
+        >
           <option value="">No options</option>
           <option value="company_name">Name</option>
           <option value="service">Service</option>
         </select>
       </div>
 
-      <div>
+      <div className={styles.sortGroup}>
         <label>Order:</label>
-        <select value={sortOrderValue || ""} onChange={handleSortOrderChange}>
+        <select
+          className={styles.select}
+          value={sortOrderValue || ""}
+          onChange={handleSortOrderChange}
+        >
           <option value="">Default</option>
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>

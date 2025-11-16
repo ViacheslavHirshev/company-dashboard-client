@@ -15,6 +15,8 @@ import { NoData } from "../../ui/errors/NoData";
 import { Filters } from "../../ui/filters/Filters";
 import { SortOptions } from "../../ui/sort/SortOptions";
 
+import styles from "./Companies.module.css";
+
 type QueryState = TGetCompaniesArgs;
 
 type QueryAction =
@@ -154,29 +156,50 @@ export function Companies() {
   if (isError) return <CustomError message={error.message} />;
 
   return (
-    <div>
+    <>
       {!data.companies.length ? (
         <NoData message="No companies was added yet" />
       ) : (
-        <div>
-          <SortOptions
-            sortByValue={queryState.sortBy}
-            sortOrderValue={queryState.sortOrder}
-            limit={queryState.limit}
-            handleSortOrderChange={handleSortOrderChange}
-            handleLimitChange={handleLimitChange}
-            handleSortByChange={handleSortByChange}
+        <div className={styles.companiesContainer}>
+          {role === "user" && (
+            <Button
+              style="primary"
+              className={styles.newButton}
+              onClickHandler={() => setIsModalOpen(true)}
+            >
+              New Company
+            </Button>
+          )}
+          <div className={styles.controls}>
+            <Filters
+              localFilters={localFilters}
+              handleApplyFilters={handleApplyFilters}
+              handleFilterChange={handleFilterChange}
+              handleResetFilters={handleResetFilters}
+            />
+            <SortOptions
+              sortByValue={queryState.sortBy}
+              sortOrderValue={queryState.sortOrder}
+              limit={queryState.limit}
+              handleSortOrderChange={handleSortOrderChange}
+              handleLimitChange={handleLimitChange}
+              handleSortByChange={handleSortByChange}
+            />
+          </div>
+
+          <CompanyList
+            className={styles.companyList}
+            companies={data.companies}
           />
-          <Filters
-            localFilters={localFilters}
-            handleApplyFilters={handleApplyFilters}
-            handleFilterChange={handleFilterChange}
-            handleResetFilters={handleResetFilters}
-          />
-          <CompanyList companies={data.companies} />
-          <div>
+
+          <div className={styles.pagination}>
+            <span className={styles.paginationText}>
+              {`${data.currentPage} of ${data.totalPages}`}
+            </span>
+
             {data.currentPage > 1 && (
               <Button
+                style="secondary"
                 onClickHandler={() =>
                   dispatch({ type: "set_page", payload: data.currentPage - 1 })
                 }
@@ -184,9 +207,10 @@ export function Companies() {
                 Prev
               </Button>
             )}
-            <span>{`Page ${data.currentPage} from ${data.totalPages}`}</span>
+
             {data.currentPage < data.totalPages && (
               <Button
+                style="secondary"
                 onClickHandler={() =>
                   dispatch({ type: "set_page", payload: data.currentPage + 1 })
                 }
@@ -197,15 +221,7 @@ export function Companies() {
           </div>
         </div>
       )}
-
-      <div>
-        {role === "user" && (
-          <Button onClickHandler={() => setIsModalOpen(true)}>
-            New Company
-          </Button>
-        )}
-        {isModalOpen && <NewCompany onClose={() => setIsModalOpen(false)} />}
-      </div>
-    </div>
+      {isModalOpen && <NewCompany onClose={() => setIsModalOpen(false)} />}
+    </>
   );
 }

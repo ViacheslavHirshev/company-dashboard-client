@@ -1,14 +1,12 @@
 import { Outlet } from "react-router";
+import Header from "../header/Header";
 
 import styles from "./AppLayout.module.css";
-import Header from "../header/Header";
-import Sidebar from "../Sidebar";
 
 function AppLayout() {
   return (
     <div className={styles.layout}>
-      <Header className={styles["header-layout"]} />
-      <Sidebar className={styles["sidebar-layout"]} />
+      <Header />
       <main className={styles["main-layout"]}>
         <Outlet />
       </main>

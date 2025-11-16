@@ -6,6 +6,8 @@ import { userUpdateCompany } from "../../../api/services/userService";
 import Button from "../../../ui/buttons/Button";
 import { splitAddress } from "../../../utils/splitAddress";
 
+import styles from "./ChangeCompany.module.css";
+
 type TUpdateCompanyProps = {
   id: number;
   onClose: () => void;
@@ -64,14 +66,14 @@ function ChangeCompany({ id, onClose, company }: TUpdateCompanyProps) {
   return (
     <Modal onClose={onClose}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <h2>Update company</h2>
-          <div>
+        <div className={styles.formContainer}>
+          <h2 className={styles.formContainer}>Update company</h2>
+          <div className={styles.formGroup}>
             <label htmlFor="companyName">Company name</label>
             <input type="text" id="companyName" {...register("companyName")} />
           </div>
 
-          <div>
+          <div className={styles.formGroup}>
             <label htmlFor="createdAt">Created at</label>
             <input
               type="text"
@@ -81,32 +83,37 @@ function ChangeCompany({ id, onClose, company }: TUpdateCompanyProps) {
             />
           </div>
 
-          <div>
+          <div className={styles.formGroup}>
             <label htmlFor="capital">Capital</label>
-            <input type="number" id="capital" {...register("capital")} />
+            <input
+              type="number"
+              min="0"
+              id="capital"
+              {...register("capital")}
+            />
           </div>
 
-          <div>
+          <div className={styles.formGroup}>
             <label htmlFor="service">Service name</label>
             <input type="text" id="service" {...register("service")} />
           </div>
 
-          <div>
+          <div className={styles.formGroup}>
             <label htmlFor="country">Country</label>
             <input type="text" id="country" {...register("country")} />
           </div>
 
-          <div>
+          <div className={styles.formGroup}>
             <label htmlFor="city">City</label>
             <input type="text" id="city" {...register("city")} />
           </div>
 
-          <div>
+          <div className={styles.formGroup}>
             <label htmlFor="street">Street</label>
             <input type="text" id="street" {...register("street")} />
           </div>
 
-          <div>
+          <div className={styles.formGroup}>
             <label htmlFor="streetNumber">Street number</label>
             <input
               type="text"
@@ -115,7 +122,12 @@ function ChangeCompany({ id, onClose, company }: TUpdateCompanyProps) {
             />
           </div>
 
-          <Button type="submit" disabled={isPending}>
+          <Button
+            className={styles.submitButton}
+            style="primary"
+            type="submit"
+            disabled={isPending}
+          >
             {isPending ? "Submiting..." : "Submit"}
           </Button>
         </div>

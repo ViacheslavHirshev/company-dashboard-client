@@ -4,6 +4,8 @@ import Button from "../../../ui/buttons/Button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addAdmin } from "../../../api/services/userService";
 
+import styles from "./AddAdmin.module.css";
+
 type NewAdminForm = {
   firstName: string;
   lastName: string;
@@ -41,28 +43,35 @@ export function AddAdmin({ onClose }: NewAdminProps) {
 
   return (
     <Modal onClose={onClose}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.formContainer}>
+        <h2 className={styles.header}>Add New Admin</h2>
+
+        <div className={styles.formGroup}>
           <label htmlFor="firstName">First name</label>
           <input type="text" id="firstName" {...register("firstName")} />
         </div>
 
-        <div>
+        <div className={styles.formGroup}>
           <label htmlFor="lastName">Last name</label>
           <input type="text" id="lastName" {...register("lastName")} />
         </div>
 
-        <div>
+        <div className={styles.formGroup}>
           <label htmlFor="email">Email</label>
           <input type="text" id="email" {...register("email")} />
         </div>
 
-        <div>
+        <div className={styles.formGroup}>
           <label htmlFor="password">Password</label>
           <input type="text" id="password" {...register("password")} />
         </div>
 
-        <Button type="submit" disabled={isPending}>
+        <Button
+          className={styles.submitButton}
+          type="submit"
+          disabled={isPending}
+          style="primary"
+        >
           {isPending ? "Adding..." : "Submit"}
         </Button>
       </form>

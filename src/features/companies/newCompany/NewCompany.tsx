@@ -4,6 +4,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { userCreateCompany } from "../../../api/services/userService";
 import Button from "../../../ui/buttons/Button";
 
+import styles from "./NewCompany.module.css";
+
 type NewCompanyProps = {
   onClose: () => void;
 };
@@ -80,14 +82,14 @@ function NewCompany({ onClose }: NewCompanyProps) {
   return (
     <Modal onClose={onClose}>
       <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
-        <div>
-          <h2>New company</h2>
-          <div>
+        <div className={styles.formContainer}>
+          <h2 className={styles.header}>New company</h2>
+          <div className={styles.formGroup}>
             <label htmlFor="companyName">Company name</label>
             <input type="text" id="companyName" {...register("companyName")} />
           </div>
 
-          <div>
+          <div className={styles.formGroup}>
             <label htmlFor="createdAt">Created at</label>
             <input
               type="text"
@@ -97,32 +99,37 @@ function NewCompany({ onClose }: NewCompanyProps) {
             />
           </div>
 
-          <div>
+          <div className={styles.formGroup}>
             <label htmlFor="capital">Capital</label>
-            <input type="number" id="capital" {...register("capital")} />
+            <input
+              type="number"
+              min="0"
+              id="capital"
+              {...register("capital")}
+            />
           </div>
 
-          <div>
+          <div className={styles.formGroup}>
             <label htmlFor="service">Service name</label>
             <input type="text" id="service" {...register("service")} />
           </div>
 
-          <div>
+          <div className={styles.formGroup}>
             <label htmlFor="country">Country</label>
             <input type="text" id="country" {...register("country")} />
           </div>
 
-          <div>
+          <div className={styles.formGroup}>
             <label htmlFor="city">City</label>
             <input type="text" id="city" {...register("city")} />
           </div>
 
-          <div>
+          <div className={styles.formGroup}>
             <label htmlFor="street">Street</label>
             <input type="text" id="street" {...register("street")} />
           </div>
 
-          <div>
+          <div className={styles.formGroup}>
             <label htmlFor="streetNumber">Street number</label>
             <input
               type="text"
@@ -131,12 +138,22 @@ function NewCompany({ onClose }: NewCompanyProps) {
             />
           </div>
 
-          <div>
+          <div className={styles.formGroup}>
             <label htmlFor="logo">Company logo</label>
-            <input type="file" id="logo" {...register("logo")} />
+            <input
+              className={styles.fileInput}
+              type="file"
+              id="logo"
+              {...register("logo")}
+            />
           </div>
 
-          <Button type="submit" disabled={isPending}>
+          <Button
+            className={styles.submitButton}
+            style="primary"
+            type="submit"
+            disabled={isPending}
+          >
             {isPending ? "Submiting..." : "Submit"}
           </Button>
         </div>

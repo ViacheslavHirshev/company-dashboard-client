@@ -13,5 +13,9 @@ export default function LogoutBtn() {
     navigate("/");
     setTimeout(() => setRole(null), 1);
   }
-  return <Button onClickHandler={logout}>Logout</Button>;
+  return (
+    <Button style="danger" onClickHandler={logout}>
+      Logout
+    </Button>
+  );
 }
