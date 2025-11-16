@@ -7,14 +7,11 @@ import Button from "../../../ui/buttons/Button";
 import styles from "./SignUpForm.module.css";
 
 function SignUpForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<TSignUpFormInput>();
+  const { register, handleSubmit } = useForm<TSignUpFormInput>();
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<TSignUpFormInput> = async (data) => {
+    // console.log(data);
     try {
       await signUp(data);
       navigate("/sign-in", { replace: true });
@@ -34,7 +31,8 @@ function SignUpForm() {
         <input
           className={styles.inputField}
           id="firstName"
-          {...register("firstName")}
+          minLength={1}
+          {...register("firstName", { required: true })}
         />
       </div>
 
@@ -43,7 +41,8 @@ function SignUpForm() {
         <input
           className={styles.inputField}
           id="lastName"
-          {...register("lastName")}
+          minLength={1}
+          {...register("lastName", { required: true })}
         />
       </div>
 
@@ -53,7 +52,7 @@ function SignUpForm() {
           className={styles.inputField}
           type="email"
           id="email"
-          {...register("email")}
+          {...register("email", { required: true })}
         />
       </div>
 
@@ -63,7 +62,8 @@ function SignUpForm() {
           className={styles.inputField}
           type="password"
           id="password"
-          {...register("password")}
+          minLength={4}
+          {...register("password", { required: true })}
         />
       </div>
 

@@ -1,4 +1,5 @@
 import Button from "../buttons/Button";
+import styles from "./NoData.module.css";
 
 type TNoDataProps = {
   message: string;
@@ -8,9 +9,13 @@ type TNoDataProps = {
 
 export function NoData({ message, btnText, clickHandler }: TNoDataProps) {
   return (
-    <div>
-      <p>{message}</p>
-      {btnText && <Button onClickHandler={clickHandler}>{btnText}</Button>}
+    <div className={styles.noDataContainer}>
+      <p className={styles.message}>{message}</p>
+      {btnText && (
+        <Button style="primary" onClickHandler={clickHandler}>
+          {btnText}
+        </Button>
+      )}
     </div>
   );
 }

@@ -9,11 +9,7 @@ import Button from "../../../ui/buttons/Button";
 import styles from "./SignInForm.module.css";
 
 function SignInForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<TSignInFormInput>();
+  const { register, handleSubmit } = useForm<TSignInFormInput>();
   const navigate = useNavigate();
 
   const { writeLocal, clearLocal } = useLocalStorage();
@@ -56,6 +52,7 @@ function SignInForm() {
         <input
           id="password"
           type="password"
+          minLength={4}
           {...register("password", { required: true })}
         />
       </div>

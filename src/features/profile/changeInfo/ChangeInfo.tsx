@@ -12,12 +12,7 @@ type ChangeInfoProps = {
   user: Partial<TUser>;
 };
 export function ChangeInfo({ onClose, user }: ChangeInfoProps) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<TUpdateProfileData>({
+  const { register, handleSubmit, reset } = useForm<TUpdateProfileData>({
     defaultValues: {
       firstName: user.firstName,
       lastName: user.lastName,
@@ -56,12 +51,22 @@ export function ChangeInfo({ onClose, user }: ChangeInfoProps) {
 
         <div className={styles.formGroup}>
           <label htmlFor="firstName">First name</label>
-          <input type="text" id="firstName" {...register("firstName")} />
+          <input
+            type="text"
+            id="firstName"
+            minLength={1}
+            {...register("firstName")}
+          />
         </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="lastName">Last name</label>
-          <input type="text" id="lastName" {...register("lastName")} />
+          <input
+            type="text"
+            id="lastName"
+            minLength={1}
+            {...register("lastName")}
+          />
         </div>
 
         <Button

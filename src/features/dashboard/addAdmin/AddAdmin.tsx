@@ -20,12 +20,7 @@ type NewAdminProps = {
 export function AddAdmin({ onClose }: NewAdminProps) {
   const queryClient = useQueryClient();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<NewAdminForm>();
+  const { register, handleSubmit, reset } = useForm<NewAdminForm>();
 
   const { mutate, isPending } = useMutation({
     mutationFn: addAdmin,
@@ -48,22 +43,41 @@ export function AddAdmin({ onClose }: NewAdminProps) {
 
         <div className={styles.formGroup}>
           <label htmlFor="firstName">First name</label>
-          <input type="text" id="firstName" {...register("firstName")} />
+          <input
+            type="text"
+            id="firstName"
+            minLength={1}
+            {...register("firstName", { required: true })}
+          />
         </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="lastName">Last name</label>
-          <input type="text" id="lastName" {...register("lastName")} />
+          <input
+            type="text"
+            id="lastName"
+            minLength={1}
+            {...register("lastName", { required: true })}
+          />
         </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="email">Email</label>
-          <input type="text" id="email" {...register("email")} />
+          <input
+            type="text"
+            id="email"
+            {...register("email", { required: true })}
+          />
         </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="password">Password</label>
-          <input type="text" id="password" {...register("password")} />
+          <input
+            type="text"
+            id="password"
+            minLength={4}
+            {...register("password", { required: true })}
+          />
         </div>
 
         <Button

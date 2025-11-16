@@ -43,6 +43,7 @@ function Reset() {
             className={styles.inputField}
             id="newPassword"
             type="password"
+            minLength={4}
             {...register("newPassword", { required: true })}
           />
         </div>

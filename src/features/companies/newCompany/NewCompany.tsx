@@ -25,12 +25,7 @@ type NewCompanyForm = {
 function NewCompany({ onClose }: NewCompanyProps) {
   const queryClient = useQueryClient();
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<NewCompanyForm>({
+  const { register, handleSubmit, reset } = useForm<NewCompanyForm>({
     defaultValues: {
       companyName: "",
       createdAt: "",
@@ -86,7 +81,12 @@ function NewCompany({ onClose }: NewCompanyProps) {
           <h2 className={styles.header}>New company</h2>
           <div className={styles.formGroup}>
             <label htmlFor="companyName">Company name</label>
-            <input type="text" id="companyName" {...register("companyName")} />
+            <input
+              type="text"
+              id="companyName"
+              minLength={1}
+              {...register("companyName", { required: true })}
+            />
           </div>
 
           <div className={styles.formGroup}>
@@ -94,7 +94,9 @@ function NewCompany({ onClose }: NewCompanyProps) {
             <input
               type="text"
               id="createdAt"
-              {...register("createdAt")}
+              pattern="^\d{4}-\d{2}-\d{2}$"
+              inputMode="numeric"
+              {...register("createdAt", { required: true })}
               placeholder="yyyy-mm-dd"
             />
           </div>
@@ -103,38 +105,59 @@ function NewCompany({ onClose }: NewCompanyProps) {
             <label htmlFor="capital">Capital</label>
             <input
               type="number"
-              min="0"
+              min={0}
               id="capital"
-              {...register("capital")}
+              {...register("capital", { required: true })}
             />
           </div>
 
           <div className={styles.formGroup}>
             <label htmlFor="service">Service name</label>
-            <input type="text" id="service" {...register("service")} />
+            <input
+              type="text"
+              id="service"
+              minLength={1}
+              {...register("service", { required: true })}
+            />
           </div>
 
           <div className={styles.formGroup}>
             <label htmlFor="country">Country</label>
-            <input type="text" id="country" {...register("country")} />
+            <input
+              type="text"
+              id="country"
+              minLength={1}
+              {...register("country", { required: true })}
+            />
           </div>
 
           <div className={styles.formGroup}>
             <label htmlFor="city">City</label>
-            <input type="text" id="city" {...register("city")} />
+            <input
+              type="text"
+              id="city"
+              minLength={1}
+              {...register("city", { required: true })}
+            />
           </div>
 
           <div className={styles.formGroup}>
             <label htmlFor="street">Street</label>
-            <input type="text" id="street" {...register("street")} />
+            <input
+              type="text"
+              id="street"
+              minLength={1}
+              {...register("street", { required: true })}
+            />
           </div>
 
           <div className={styles.formGroup}>
             <label htmlFor="streetNumber">Street number</label>
             <input
-              type="text"
+              type="number"
               id="streetNumber"
-              {...register("streetNumber")}
+              min={1}
+              {...register("streetNumber", { required: true })}
             />
           </div>
 

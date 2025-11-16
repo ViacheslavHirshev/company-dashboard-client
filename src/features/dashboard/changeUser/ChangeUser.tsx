@@ -16,12 +16,7 @@ type ChangeUserProps = {
   onClose: () => void;
 };
 function ChangeUser({ id, onClose }: ChangeUserProps) {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<ChangeUserForm>();
+  const { register, handleSubmit, reset } = useForm<ChangeUserForm>();
 
   const queryClient = useQueryClient();
   const { isPending, mutate } = useMutation({
@@ -56,12 +51,20 @@ function ChangeUser({ id, onClose }: ChangeUserProps) {
         <h2 className={styles.header}>Change User Info</h2>
         <div className={styles.formGroup}>
           <label>First name</label>
-          <input type="text" {...register("firstName")} />
+          <input
+            type="text"
+            minLength={1}
+            {...register("firstName", { required: true })}
+          />
         </div>
 
         <div className={styles.formGroup}>
           <label>Last name</label>
-          <input type="text" {...register("lastName")} />
+          <input
+            type="text"
+            minLength={1}
+            {...register("lastName", { required: true })}
+          />
         </div>
 
         <Button

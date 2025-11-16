@@ -157,70 +157,77 @@ export function Companies() {
 
   return (
     <>
-      {!data.companies.length ? (
-        <NoData message="No companies was added yet" />
-      ) : (
-        <div className={styles.companiesContainer}>
-          {role === "user" && (
-            <Button
-              style="primary"
-              className={styles.newButton}
-              onClickHandler={() => setIsModalOpen(true)}
-            >
-              New Company
-            </Button>
-          )}
-          <div className={styles.controls}>
-            <Filters
-              localFilters={localFilters}
-              handleApplyFilters={handleApplyFilters}
-              handleFilterChange={handleFilterChange}
-              handleResetFilters={handleResetFilters}
+      <div className={styles.companiesContainer}>
+        {role === "user" && (
+          <Button
+            style="primary"
+            className={styles.newButton}
+            onClickHandler={() => setIsModalOpen(true)}
+          >
+            New Company
+          </Button>
+        )}
+        {!data.companies.length ? (
+          <NoData message="No companies was added yet" />
+        ) : (
+          <>
+            <div className={styles.controls}>
+              <Filters
+                localFilters={localFilters}
+                handleApplyFilters={handleApplyFilters}
+                handleFilterChange={handleFilterChange}
+                handleResetFilters={handleResetFilters}
+              />
+              <SortOptions
+                sortByValue={queryState.sortBy}
+                sortOrderValue={queryState.sortOrder}
+                limit={queryState.limit}
+                handleSortOrderChange={handleSortOrderChange}
+                handleLimitChange={handleLimitChange}
+                handleSortByChange={handleSortByChange}
+              />
+            </div>
+            <CompanyList
+              className={styles.companyList}
+              companies={data.companies}
             />
-            <SortOptions
-              sortByValue={queryState.sortBy}
-              sortOrderValue={queryState.sortOrder}
-              limit={queryState.limit}
-              handleSortOrderChange={handleSortOrderChange}
-              handleLimitChange={handleLimitChange}
-              handleSortByChange={handleSortByChange}
-            />
-          </div>
+            <div className={styles.pagination}>
+              <span className={styles.paginationText}>
+                {`${data.currentPage} of ${data.totalPages}`}
+              </span>
 
-          <CompanyList
-            className={styles.companyList}
-            companies={data.companies}
-          />
+              {data.currentPage > 1 && (
+                <Button
+                  style="secondary"
+                  onClickHandler={() =>
+                    dispatch({
+                      type: "set_page",
+                      payload: data.currentPage - 1,
+                    })
+                  }
+                >
+                  Prev
+                </Button>
+              )}
 
-          <div className={styles.pagination}>
-            <span className={styles.paginationText}>
-              {`${data.currentPage} of ${data.totalPages}`}
-            </span>
+              {data.currentPage < data.totalPages && (
+                <Button
+                  style="secondary"
+                  onClickHandler={() =>
+                    dispatch({
+                      type: "set_page",
+                      payload: data.currentPage + 1,
+                    })
+                  }
+                >
+                  Next
+                </Button>
+              )}
+            </div>
+          </>
+        )}
+      </div>
 
-            {data.currentPage > 1 && (
-              <Button
-                style="secondary"
-                onClickHandler={() =>
-                  dispatch({ type: "set_page", payload: data.currentPage - 1 })
-                }
-              >
-                Prev
-              </Button>
-            )}
-
-            {data.currentPage < data.totalPages && (
-              <Button
-                style="secondary"
-                onClickHandler={() =>
-                  dispatch({ type: "set_page", payload: data.currentPage + 1 })
-                }
-              >
-                Next
-              </Button>
-            )}
-          </div>
-        </div>
-      )}
       {isModalOpen && <NewCompany onClose={() => setIsModalOpen(false)} />}
     </>
   );

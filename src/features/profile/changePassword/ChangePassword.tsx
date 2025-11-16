@@ -45,13 +45,19 @@ function ChangePassword() {
           <input
             id="curPswrd"
             type="password"
-            {...register("currentPassword")}
+            minLength={4}
+            {...register("currentPassword", { required: true })}
           />
         </div>
 
         <div className={styles.formGroup}>
           <label htmlFor="newPswrd">New password:</label>
-          <input id="newPswrd" type="password" {...register("newPassword")} />
+          <input
+            id="newPswrd"
+            type="password"
+            minLength={4}
+            {...register("newPassword", { required: true })}
+          />
         </div>
 
         <div className={styles.formGroup}>
@@ -59,7 +65,8 @@ function ChangePassword() {
           <input
             id="repPswrd"
             type="password"
-            {...register("newPasswordRepeated")}
+            minLength={4}
+            {...register("newPasswordRepeated", { required: true })}
           />
         </div>
 

@@ -1,7 +1,9 @@
+import styles from "./NotFound.module.css";
+
 function NotFound() {
   return (
-    <div>
-      <h1>Page doesn't exist 😢</h1>
+    <div className={styles.notFoundContainer}>
+      <h1 className={styles.heading}>Page doesn't exist 😢</h1>
     </div>
   );
 }
