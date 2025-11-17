@@ -4,6 +4,7 @@ import { resetPassword } from "../../../api/services/authService";
 import { useNavigate } from "react-router";
 
 import styles from "./Reset.module.css";
+import toast from "react-hot-toast";
 
 type ResetForm = {
   email: string;
@@ -18,9 +19,14 @@ function Reset() {
     try {
       const result = await resetPassword(data);
       console.log(result.message);
+      setTimeout(() => toast.success("Password was reset"), 2);
       navigate("/sign-in", { replace: true });
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        console.log(error);
+      }
     }
   };
 

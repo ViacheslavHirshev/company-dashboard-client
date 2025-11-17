@@ -7,9 +7,11 @@ import Button from "../../../ui/buttons/Button";
 import { splitAddress } from "../../../utils/splitAddress";
 
 import styles from "./ChangeCompany.module.css";
+import toast from "react-hot-toast";
+import { normalizeDate } from "../../../utils/normalizeDate";
 
 type TUpdateCompanyProps = {
-  id: number;
+  id: string;
   onClose: () => void;
   company: Partial<TCompany>;
 };
@@ -24,7 +26,7 @@ function ChangeCompany({ id, onClose, company }: TUpdateCompanyProps) {
   const { register, handleSubmit, reset } = useForm<TUserUpdateCompanyData>({
     defaultValues: {
       companyName: company.name,
-      createdAt: company.createdAt,
+      createdAt: normalizeDate(company.createdAt!),
       capital: company.capital,
       service: company.service,
       country,
@@ -37,8 +39,8 @@ function ChangeCompany({ id, onClose, company }: TUpdateCompanyProps) {
   const { mutate, isPending } = useMutation({
     mutationFn: (data: TUserUpdateCompanyData) =>
       userUpdateCompany(`${company.id}`, data),
+
     onSuccess: (updatedData) => {
-      reset();
       queryClient.setQueryData(["company", id], (oldData: { company: any }) => {
         if (!oldData) return;
 
@@ -48,9 +50,16 @@ function ChangeCompany({ id, onClose, company }: TUpdateCompanyProps) {
         };
       });
       queryClient.invalidateQueries({ queryKey: ["companies"] });
+      setTimeout(() => toast.success("Company info changed"), 1);
+      reset();
+      onClose();
     },
     onError: (error) => {
-      console.log(error);
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        console.log(error);
+      }
     },
   });
 

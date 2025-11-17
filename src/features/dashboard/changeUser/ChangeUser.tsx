@@ -5,6 +5,7 @@ import Modal from "../../../ui/modal/Modal";
 import Button from "../../../ui/buttons/Button";
 
 import styles from "./ChangeUser.module.css";
+import toast from "react-hot-toast";
 
 type ChangeUserForm = {
   firstName: string;
@@ -22,8 +23,6 @@ function ChangeUser({ id, onClose }: ChangeUserProps) {
   const { isPending, mutate } = useMutation({
     mutationFn: (data: ChangeUserForm) => changeUser(id, data),
     onSuccess: (updatedData) => {
-      reset();
-      onClose();
       queryClient.setQueryData(["user", id], (oldData: { user: any }) => {
         if (!oldData) return;
         return {
@@ -35,9 +34,16 @@ function ChangeUser({ id, onClose }: ChangeUserProps) {
           },
         };
       });
+      setTimeout(() => toast.success("User info changed"), 1);
+      reset();
+      onClose();
     },
     onError: (error) => {
-      console.log(error);
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        console.log(error);
+      }
     },
   });
 

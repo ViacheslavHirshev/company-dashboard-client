@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { changePassword } from "../../../api/services/userService";
 
 import styles from "./ChangePassword.module.css";
+import toast from "react-hot-toast";
 
 type ChangePasswordForm = {
   currentPassword: string;
@@ -19,15 +20,23 @@ function ChangePassword() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: changePassword,
-    onSuccess: (data) => {
-      console.log(data.message);
+    onSuccess: () => {
+      toast.success("Password changed");
+      navigate(-1);
     },
-    onError: (error) => console.log(error),
+    onError: (error) => {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        console.log(error);
+      }
+    },
   });
 
   const onSubmit: SubmitHandler<ChangePasswordForm> = (data) => {
     if (data.newPassword !== data.newPasswordRepeated) {
-      throw new Error("Passwords do not match");
+      toast.error("Passwords don't match");
+      return;
     }
 
     mutate({

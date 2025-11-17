@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addAdmin } from "../../../api/services/userService";
 
 import styles from "./AddAdmin.module.css";
+import toast from "react-hot-toast";
 
 type NewAdminForm = {
   firstName: string;
@@ -24,12 +25,19 @@ export function AddAdmin({ onClose }: NewAdminProps) {
 
   const { mutate, isPending } = useMutation({
     mutationFn: addAdmin,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admins"] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["admins"] });
+      setTimeout(() => toast.success("Admin added"), 1);
       reset();
       onClose();
     },
-    onError: () => {},
+    onError: (error) => {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        console.log(error);
+      }
+    },
   });
 
   const onSubmit: SubmitHandler<NewAdminForm> = (data) => {

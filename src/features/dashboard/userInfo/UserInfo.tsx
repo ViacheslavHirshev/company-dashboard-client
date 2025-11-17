@@ -9,6 +9,7 @@ import { useState } from "react";
 import ChangeUser from "../changeUser/ChangeUser";
 
 import styles from "./UserInfo.module.css";
+import toast from "react-hot-toast";
 
 export function UserInfo() {
   const { role } = useRoleContext();
@@ -31,10 +32,13 @@ export function UserInfo() {
   const { isPending: isDeleting, mutate } = useMutation({
     mutationFn: () => deleteUser(id!),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["users"] });
       if (role === "superadmin") {
         await queryClient.invalidateQueries({ queryKey: ["admins"] });
       }
+
+      await queryClient.invalidateQueries({ queryKey: ["users"] });
+      setTimeout(() => toast.success("User deleted"));
+
       navigate("/dashboard");
     },
     onError: () => {

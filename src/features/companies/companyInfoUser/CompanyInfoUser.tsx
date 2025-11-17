@@ -13,6 +13,7 @@ import { normalizeDate } from "../../../utils/normalizeDate";
 import ChangeCompany from "../changeCompany/ChangeCompany";
 
 import styles from "./CompanyInfoUser.module.css";
+import toast from "react-hot-toast";
 
 export function CompanyInfoUser() {
   const { id } = useParams();
@@ -40,17 +41,32 @@ export function CompanyInfoUser() {
           },
         };
       });
+
+      toast.success("Logo updated");
     },
-    onError: () => {},
+    onError: (error) => {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        console.log(error);
+      }
+    },
   });
 
   const { mutate: removeCompany, isPending: isCompanyDeleting } = useMutation({
     mutationFn: () => userDeleteCompany(id!),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["companies"] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["companies"] });
+      setTimeout(() => toast.success("Company was deleted"), 1);
       navigate("/companies");
     },
-    onError: () => {},
+    onError: (error) => {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        console.log(error);
+      }
+    },
   });
 
   if (isPending || isCompanyDeleting || isLogoUpdating)
@@ -157,7 +173,7 @@ export function CompanyInfoUser() {
 
       {isModalOpen && (
         <ChangeCompany
-          id={data.company.id}
+          id={id!}
           company={data.company}
           onClose={() => setIsModalOpen(false)}
         />

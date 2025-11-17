@@ -5,6 +5,7 @@ import { userCreateCompany } from "../../../api/services/userService";
 import Button from "../../../ui/buttons/Button";
 
 import styles from "./NewCompany.module.css";
+import toast from "react-hot-toast";
 
 type NewCompanyProps = {
   onClose: () => void;
@@ -43,11 +44,16 @@ function NewCompany({ onClose }: NewCompanyProps) {
     mutationFn: userCreateCompany,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["companies"] });
+      setTimeout(() => toast.success("Company created"), 1);
       reset();
       onClose();
     },
     onError: (error) => {
-      console.log(error);
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        console.log(error);
+      }
     },
   });
 

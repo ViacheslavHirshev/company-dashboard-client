@@ -9,6 +9,7 @@ import { ChangeInfo } from "./changeInfo/ChangeInfo";
 import { useNavigate } from "react-router";
 
 import styles from "./Profile.module.css";
+import toast from "react-hot-toast";
 
 export function Profile() {
   const { isPending, isError, data, error } = useQuery({
@@ -35,8 +36,15 @@ export function Profile() {
           },
         };
       });
+      toast.success("Avatar updated");
     },
-    onError: () => {},
+    onError: (error) => {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        console.log(error);
+      }
+    },
   });
 
   function handleChangeAvatar() {

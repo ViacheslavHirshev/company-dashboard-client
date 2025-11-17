@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import Button from "../../../ui/buttons/Button";
 
 import styles from "./SignUpForm.module.css";
+import toast from "react-hot-toast";
 
 function SignUpForm() {
   const { register, handleSubmit } = useForm<TSignUpFormInput>();
@@ -14,10 +15,11 @@ function SignUpForm() {
     // console.log(data);
     try {
       await signUp(data);
+      setTimeout(() => toast.success("You successfully registered"));
       navigate("/sign-in", { replace: true });
     } catch (error) {
       if (error instanceof Error) {
-        console.error(error.message);
+        toast.error(error.message);
       } else {
         console.error(error);
       }

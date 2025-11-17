@@ -6,6 +6,7 @@ import Modal from "../../../ui/modal/Modal";
 import Button from "../../../ui/buttons/Button";
 
 import styles from "./ChangeInfo.module.css";
+import toast from "react-hot-toast";
 
 type ChangeInfoProps = {
   onClose: () => void;
@@ -34,10 +35,17 @@ export function ChangeInfo({ onClose, user }: ChangeInfoProps) {
         };
       });
 
+      setTimeout(() => toast.success("Info changed"), 1);
       reset();
       onClose();
     },
-    onError: () => {},
+    onError: (error) => {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        console.log(error);
+      }
+    },
   });
 
   const onSubmit: SubmitHandler<TUpdateProfileData> = (data) => {

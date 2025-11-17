@@ -20,7 +20,6 @@ import {
   TGetAllUsersResponse,
   TSignUpFormInput,
   TAddAdminResponse,
-  TUser,
   TGetUserByIdResponse,
   TChangeUserResponse,
   TChangePasswordData,
