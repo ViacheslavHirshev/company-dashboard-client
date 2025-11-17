@@ -14,4 +14,4 @@ How to run:
  - npm run build (for build)
 
 .env example:
-VITE_API_BASE = http://localhost:3000
+ - VITE_API_BASE = http://localhost:3000
