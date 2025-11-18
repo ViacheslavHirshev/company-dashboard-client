@@ -10,6 +10,7 @@ Technologies used:
 How to run:
  - Download repository
  - Add .env file
+ - npm i
  - npm run dev (for dev mode)
  - npm run build (for build)
 
